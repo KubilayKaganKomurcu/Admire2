@@ -1,87 +1,60 @@
 #!/usr/bin/env python3
+"""
+Download Turkish folder from Google Drive.
+Structure: Turkish/ -> phrase folders -> 5 PNGs each
+"""
 import os
-import re
-import requests
-from bs4 import BeautifulSoup
 import gdown
 
-def get_folder_contents(folder_id):
-    """Get folder contents by parsing Google Drive page."""
-    url = f"https://drive.google.com/drive/folders/{folder_id}"
+def download_turkish():
+    """Download only the Turkish folder."""
     
-    try:
-        # Use gdown's session for cookies
-        sess = requests.Session()
-        res = sess.get(url, headers={"User-Agent": "Mozilla/5.0"})
-        
-        # Find all file/folder IDs in the page
-        # Pattern for Google Drive IDs
-        pattern = r'\["([a-zA-Z0-9_-]{25,})","([^"]+)"'
-        matches = re.findall(pattern, res.text)
-        
-        items = []
-        seen = set()
-        for file_id, name in matches:
-            if file_id not in seen and len(file_id) > 20:
-                seen.add(file_id)
-                # Skip common non-file IDs
-                if name and not name.startswith('http') and '.' in name or len(name) < 50:
-                    items.append((file_id, name))
-        
-        return items
-    except Exception as e:
-        print(f"Error: {e}")
-        return []
-
-def download_with_gdown(folder_id, output_dir):
-    """Try to download using gdown's folder download with remaining-ok."""
-    url = f"https://drive.google.com/drive/folders/{folder_id}"
-    try:
-        gdown.download_folder(url, output=output_dir, quiet=False, remaining_ok=True)
-        return True
-    except Exception as e:
-        print(f"gdown folder failed: {e}")
-        return False
-
-def download_languages(main_folder_id, output_dir):
-    """Download each language folder separately."""
-    os.makedirs(output_dir, exist_ok=True)
+    # Main folder containing all languages
+    MAIN_FOLDER_ID = "1kVC3a1ZqmYf6O5PyQ6NQuv_orgzICUOg"
+    OUTPUT_DIR = "./data/images"
     
-    # Known language folder IDs from the Google Drive
-    # These are the subfolders in the main folder
-    languages = [
-        "Chinese", "Georgian", "Greek", "Igbo", "Kazakh",
-        "Norwegian", "Portuguese-Brazil", "Portuguese-Portugal",
-        "Russian", "Serbian", "Slovak", "Slovenian",
-        "Spanish-Ecuador", "Turkish", "Uzbek"
-    ]
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
     
-    print(f"Attempting to download from main folder: {main_folder_id}")
-    print(f"Output directory: {output_dir}")
+    print("=" * 50)
+    print("Downloading Turkish folder...")
+    print(f"Output: {OUTPUT_DIR}/Turkish/")
     print("=" * 50)
     
-    # First try downloading each language folder with gdown
-    main_url = f"https://drive.google.com/drive/folders/{main_folder_id}"
+    # First, get the Turkish folder ID by downloading folder list
+    main_url = f"https://drive.google.com/drive/folders/{MAIN_FOLDER_ID}"
     
-    # Download the main folder - gdown will create subfolders
-    print("Downloading main folder (this may take a while)...")
     try:
+        # Download just Turkish - gdown will detect subfolders
         gdown.download_folder(
-            main_url, 
-            output=output_dir, 
-            quiet=False, 
+            main_url,
+            output=OUTPUT_DIR,
+            quiet=False,
             remaining_ok=True,
             use_cookies=False
         )
     except Exception as e:
-        print(f"Note: {e}")
-        print("Continuing anyway...")
+        print(f"Error: {e}")
     
-    print("=" * 50)
-    print("Download attempt complete!")
-    print(f"Check {output_dir} for downloaded files.")
+    # Check if Turkish folder exists
+    turkish_path = os.path.join(OUTPUT_DIR, "Turkish")
+    if os.path.exists(turkish_path):
+        phrases = os.listdir(turkish_path)
+        print(f"\n✓ Turkish folder downloaded with {len(phrases)} phrases")
+        for p in phrases[:5]:
+            phrase_path = os.path.join(turkish_path, p)
+            if os.path.isdir(phrase_path):
+                files = os.listdir(phrase_path)
+                print(f"  - {p}: {len(files)} files")
+    else:
+        print("\n✗ Turkish folder not found. Trying alternative method...")
+        
+        # Alternative: Try to find and download Turkish folder specifically
+        # You may need to provide the Turkish folder ID directly
+        print("\nTo download Turkish only, find the folder ID from the browser:")
+        print("1. Open: https://drive.google.com/drive/folders/1kVC3a1ZqmYf6O5PyQ6NQuv_orgzICUOg")
+        print("2. Click on 'Turkish' folder")  
+        print("3. Copy the folder ID from URL")
+        print("4. Run: gdown --folder https://drive.google.com/drive/folders/TURKISH_FOLDER_ID -O ./data/images/Turkish")
 
 if __name__ == "__main__":
-    FOLDER_ID = "1kVC3a1ZqmYf6O5PyQ6NQuv_orgzICUOg"
-    OUTPUT_DIR = "./data/images"
-    download_languages(FOLDER_ID, OUTPUT_DIR)
+    download_turkish()
