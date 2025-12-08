@@ -1,0 +1,72 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Data files (download separately)
+data/subtask_a/english/*.tsv
+data/subtask_a/english/*/
+data/subtask_a/portuguese/*.tsv
+data/subtask_a/portuguese/*/
+data/subtask_b/*.tsv
+data/subtask_b/*/
+
+# Outputs
+outputs/
+*.csv
+submission.tsv
+results/
+
+# Logs
+*.log
+logs/
+
+# Environment / Secrets (NEVER commit these!)
+.env
+.env.local
+*.env
+secrets.py
+*_secret*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Model cache
+*.pt
+*.bin
+*.safetensors
+
