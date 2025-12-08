@@ -164,7 +164,7 @@ class BaseEngine(ABC):
             model=model,
             messages=messages,
             temperature=temperature,
-            max_tokens=max_tokens
+            max_completion_tokens=max_tokens  # GPT-5 uses max_completion_tokens
         )
         
         return response.choices[0].message.content
