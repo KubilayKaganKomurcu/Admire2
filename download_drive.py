@@ -1,94 +1,87 @@
 #!/usr/bin/env python3
-"""
-Script to download nested Google Drive folders with >50 files.
-Structure: Main Folder -> Languages -> Phrases -> 5 PNGs each
-"""
-
 import os
+import re
+import requests
+from bs4 import BeautifulSoup
 import gdown
-from gdown.download_folder import _get_folder_list
 
+def get_folder_contents(folder_id):
+    """Get folder contents by parsing Google Drive page."""
+    url = f"https://drive.google.com/drive/folders/{folder_id}"
+    
+    try:
+        # Use gdown's session for cookies
+        sess = requests.Session()
+        res = sess.get(url, headers={"User-Agent": "Mozilla/5.0"})
+        
+        # Find all file/folder IDs in the page
+        # Pattern for Google Drive IDs
+        pattern = r'\["([a-zA-Z0-9_-]{25,})","([^"]+)"'
+        matches = re.findall(pattern, res.text)
+        
+        items = []
+        seen = set()
+        for file_id, name in matches:
+            if file_id not in seen and len(file_id) > 20:
+                seen.add(file_id)
+                # Skip common non-file IDs
+                if name and not name.startswith('http') and '.' in name or len(name) < 50:
+                    items.append((file_id, name))
+        
+        return items
+    except Exception as e:
+        print(f"Error: {e}")
+        return []
 
-def get_subfolders(folder_id):
-    """Get list of subfolders from a Google Drive folder."""
+def download_with_gdown(folder_id, output_dir):
+    """Try to download using gdown's folder download with remaining-ok."""
     url = f"https://drive.google.com/drive/folders/{folder_id}"
     try:
-        return_code, gdrive_files = _get_folder_list(url)
-        if return_code != 0:
-            print(f"Warning: Could not fully retrieve folder {folder_id}")
-        
-        # Filter for folders only (folders have mimeType containing 'folder')
-        subfolders = []
-        files = []
-        for f in gdrive_files:
-            # gdown returns tuples of (id, name, mimeType, ...)
-            if len(f) >= 3:
-                file_id, name, mime = f[0], f[1], f[2] if len(f) > 2 else ""
-                if "folder" in str(mime).lower():
-                    subfolders.append((file_id, name))
-                else:
-                    files.append((file_id, name))
-            else:
-                file_id, name = f[0], f[1]
-                subfolders.append((file_id, name))  # Assume folder if no mime
-        
-        return subfolders, files
+        gdown.download_folder(url, output=output_dir, quiet=False, remaining_ok=True)
+        return True
     except Exception as e:
-        print(f"Error getting folder list: {e}")
-        return [], []
+        print(f"gdown folder failed: {e}")
+        return False
 
-
-def download_folder_recursive(folder_id, output_dir, depth=0):
-    """Recursively download folders, handling >50 file limit by going deeper."""
-    indent = "  " * depth
-    
+def download_languages(main_folder_id, output_dir):
+    """Download each language folder separately."""
     os.makedirs(output_dir, exist_ok=True)
     
-    print(f"{indent}Processing folder: {output_dir}")
+    # Known language folder IDs from the Google Drive
+    # These are the subfolders in the main folder
+    languages = [
+        "Chinese", "Georgian", "Greek", "Igbo", "Kazakh",
+        "Norwegian", "Portuguese-Brazil", "Portuguese-Portugal",
+        "Russian", "Serbian", "Slovak", "Slovenian",
+        "Spanish-Ecuador", "Turkish", "Uzbek"
+    ]
     
-    subfolders, files = get_subfolders(folder_id)
-    
-    # Download files in current folder
-    if files:
-        print(f"{indent}  Found {len(files)} files")
-        for file_id, file_name in files:
-            output_path = os.path.join(output_dir, file_name)
-            if os.path.exists(output_path):
-                print(f"{indent}  Skipping (exists): {file_name}")
-                continue
-            try:
-                url = f"https://drive.google.com/uc?id={file_id}"
-                gdown.download(url, output_path, quiet=True)
-                print(f"{indent}  Downloaded: {file_name}")
-            except Exception as e:
-                print(f"{indent}  Error downloading {file_name}: {e}")
-    
-    # Recursively process subfolders
-    if subfolders:
-        print(f"{indent}  Found {len(subfolders)} subfolders")
-        for subfolder_id, subfolder_name in subfolders:
-            subfolder_path = os.path.join(output_dir, subfolder_name)
-            download_folder_recursive(subfolder_id, subfolder_path, depth + 1)
-
-
-def main():
-    # The folder ID from your URL
-    # https://drive.google.com/drive/folders/1kVC3a1ZqmYf6O5PyQ6NQuv_orgzICUOg
-    FOLDER_ID = "1kVC3a1ZqmYf6O5PyQ6NQuv_orgzICUOg"
-    
-    # Output directory
-    OUTPUT_DIR = "./images"  # Change this to your desired output path
-    
-    print(f"Starting download from folder: {FOLDER_ID}")
-    print(f"Output directory: {OUTPUT_DIR}")
+    print(f"Attempting to download from main folder: {main_folder_id}")
+    print(f"Output directory: {output_dir}")
     print("=" * 50)
     
-    download_folder_recursive(FOLDER_ID, OUTPUT_DIR)
+    # First try downloading each language folder with gdown
+    main_url = f"https://drive.google.com/drive/folders/{main_folder_id}"
+    
+    # Download the main folder - gdown will create subfolders
+    print("Downloading main folder (this may take a while)...")
+    try:
+        gdown.download_folder(
+            main_url, 
+            output=output_dir, 
+            quiet=False, 
+            remaining_ok=True,
+            use_cookies=False
+        )
+    except Exception as e:
+        print(f"Note: {e}")
+        print("Continuing anyway...")
     
     print("=" * 50)
-    print("Download complete!")
-
+    print("Download attempt complete!")
+    print(f"Check {output_dir} for downloaded files.")
 
 if __name__ == "__main__":
-    main()
-
+    FOLDER_ID = "1kVC3a1ZqmYf6O5PyQ6NQuv_orgzICUOg"
+    OUTPUT_DIR = "./data/images"
+    download_languages(FOLDER_ID, OUTPUT_DIR)
