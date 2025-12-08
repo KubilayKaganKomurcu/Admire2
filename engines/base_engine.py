@@ -123,7 +123,7 @@ class BaseEngine(ABC):
         self,
         prompt: str,
         images: Optional[List[str]] = None,
-        temperature: float = 0.0,
+        temperature: float = 1.0,
         max_tokens: int = 1024,
         model: Optional[str] = None
     ) -> str:
@@ -133,7 +133,7 @@ class BaseEngine(ABC):
         Args:
             prompt: Text prompt
             images: Optional list of base64-encoded images
-            temperature: Sampling temperature
+            temperature: Sampling temperature (GPT-5 only supports 1.0)
             max_tokens: Maximum response tokens
             model: Model to use (defaults to config)
         
@@ -160,11 +160,11 @@ class BaseEngine(ABC):
             # Text-only message
             messages.append({"role": "user", "content": prompt})
         
+        # GPT-5 models only support temperature=1, so we don't pass it
         response = self.client.chat.completions.create(
             model=model,
             messages=messages,
-            temperature=temperature,
-            max_completion_tokens=max_tokens  # GPT-5 uses max_completion_tokens
+            max_completion_tokens=max_tokens
         )
         
         return response.choices[0].message.content
