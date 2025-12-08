@@ -103,32 +103,38 @@ class DAALFTEngine(BaseEngine):
         Returns:
             Tuple of (sentence_type, confidence, reasoning)
         """
-        prompt = f"""TASK: Idiomaticity Detection
-
-Analyze whether the expression "{compound}" is used IDIOMATICALLY or LITERALLY in the following sentence.
+        prompt = f"""TASK: Idiomaticity Detection - Classify LITERAL vs IDIOMATIC
 
 SENTENCE: "{sentence}"
+EXPRESSION: "{compound}"
 
-DEFINITIONS:
-- IDIOMATIC: The expression has a figurative, metaphorical, or culturally-specific meaning different from the literal combination of words.
-- LITERAL: The expression is used with its direct, word-for-word meaning.
+IMPORTANT: Even well-known idioms can be used LITERALLY in certain contexts!
 
-ANALYSIS STEPS:
-1. Is "{compound}" a known idiomatic expression? What does it typically mean idiomatically?
-2. What would be the literal interpretation of "{compound}"?
-3. In the given sentence, which interpretation makes more sense in context?
-4. What contextual clues support your decision?
+LITERAL = The words describe actual, physical, real things:
+- "green fingers" → fingers that are actually green-colored (paint, dye)
+- "couch potato" → an actual potato sitting on a couch
+- Look for: physical actions, colors, materials, concrete objects
+
+IDIOMATIC = Figurative/metaphorical meaning:
+- "green fingers" → skilled at gardening
+- "couch potato" → lazy person who watches TV
+- Look for: descriptions of skills, personality, abstract qualities
+
+CONTEXT ANALYSIS for "{sentence}":
+- Are there physical actions (dipping, painting, holding)? → LITERAL
+- Are there mentions of actual colors/materials? → LITERAL  
+- Is it describing a skill or behavior? → IDIOMATIC
+- Is it describing someone's character? → IDIOMATIC
 
 OUTPUT FORMAT (JSON):
 {{
-    "classification": "IDIOMATIC" or "LITERAL",
+    "classification": "LITERAL" or "IDIOMATIC",
     "confidence": 0.0 to 1.0,
-    "idiomatic_meaning": "the figurative meaning if applicable",
-    "literal_meaning": "the word-for-word meaning",
-    "reasoning": "brief explanation of your decision"
+    "key_evidence": "the words in the sentence that determined your choice",
+    "reasoning": "brief explanation"
 }}
 
-Respond with the JSON only:"""
+JSON response:"""
 
         response = self._call_llm_with_retry(
             prompt,

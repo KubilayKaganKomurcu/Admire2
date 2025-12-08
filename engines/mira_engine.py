@@ -93,22 +93,31 @@ class MIRAEngine(BaseEngine):
         Classify whether the expression is used idiomatically or literally.
         Uses zero-shot prompting with explicit instructions.
         """
-        prompt = f"""Analyze the following sentence and determine if the expression "{compound}" is used IDIOMATICALLY (figurative/metaphorical meaning) or LITERALLY (word-for-word meaning).
+        prompt = f"""TASK: Determine if "{compound}" is used LITERALLY or IDIOMATICALLY in this sentence.
 
-Sentence: "{sentence}"
+SENTENCE: "{sentence}"
 
-Consider:
-1. Does "{compound}" have a well-known idiomatic meaning?
-2. In this specific context, is the expression used figuratively or literally?
-3. What clues in the sentence indicate the intended meaning?
+CRITICAL: Many expressions can be used BOTH ways. You must analyze the CONTEXT carefully:
 
-Respond with EXACTLY one of these formats:
-- "IDIOMATIC" if the expression is used figuratively
-- "LITERAL" if the expression is used with its literal meaning
+LITERAL means: The words describe actual, physical, real-world objects/actions.
+- Example: "green fingers" is LITERAL if someone's fingers are actually colored green (paint, dye, etc.)
+- Example: "couch potato" is LITERAL if describing an actual potato on a couch
 
-Then briefly explain your reasoning.
+IDIOMATIC means: The expression has a figurative/metaphorical meaning different from the words.
+- Example: "green fingers" is IDIOMATIC when meaning "good at gardening"
+- Example: "couch potato" is IDIOMATIC when meaning "lazy person watching TV"
 
-Classification:"""
+CONTEXT CLUES TO LOOK FOR:
+- Physical actions (dipping, painting, touching) → likely LITERAL
+- Abstract descriptions (becoming, being known as) → likely IDIOMATIC
+- Mention of actual colors, materials, objects → likely LITERAL
+- Mention of skills, behaviors, characteristics → likely IDIOMATIC
+
+NOW ANALYZE: In the sentence "{sentence}", is "{compound}" used:
+- To describe something PHYSICAL/REAL? → Answer LITERAL
+- To describe something FIGURATIVE/METAPHORICAL? → Answer IDIOMATIC
+
+Your answer (LITERAL or IDIOMATIC):"""
 
         response = self._call_llm_with_retry(
             prompt,

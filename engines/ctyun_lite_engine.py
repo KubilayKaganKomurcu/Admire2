@@ -84,11 +84,18 @@ class CTYUNLiteEngine(BaseEngine):
         """
         Classify sentence type using efficient text-only approach.
         """
-        prompt = f"""Is "{compound}" used IDIOMATICALLY (figurative meaning) or LITERALLY (word-for-word meaning) in this sentence?
+        prompt = f"""Is "{compound}" used LITERALLY (physical/real) or IDIOMATICALLY (figurative) in this sentence?
 
 Sentence: "{sentence}"
 
-Answer with just one word: IDIOMATIC or LITERAL"""
+LITERAL = actual physical meaning (e.g., fingers colored green with paint)
+IDIOMATIC = figurative meaning (e.g., skilled at gardening)
+
+Look for context clues:
+- Physical actions (dipping, painting) → LITERAL
+- Skills/behaviors → IDIOMATIC
+
+Answer with ONE word: LITERAL or IDIOMATIC"""
 
         response = self._call_llm_with_retry(
             prompt,
