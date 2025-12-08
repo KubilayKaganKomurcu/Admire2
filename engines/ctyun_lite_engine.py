@@ -84,25 +84,18 @@ class CTYUNLiteEngine(BaseEngine):
         """
         Classify sentence type using efficient text-only approach.
         """
-        prompt = f"""Classify: Is "{compound}" LITERAL or IDIOMATIC in this sentence?
+        prompt = f"""Is "{compound}" used LITERALLY (physical/real) or IDIOMATICALLY (figurative) in this sentence?
 
-"{sentence}"
+Sentence: "{sentence}"
 
-DECISION RULES:
-1. Physical action verbs (dip, paint, touch, hold) + "{compound}" → LITERAL
-2. Colors/materials mentioned with "{compound}" → LITERAL
-3. Describing personality/skill/behavior → IDIOMATIC
-4. "has/have {compound}" describing ability → IDIOMATIC
-5. "has/have {compound}" after physical action → LITERAL
+LITERAL = actual physical meaning (e.g., fingers colored green with paint)
+IDIOMATIC = figurative meaning (e.g., skilled at gardening)
 
-EXAMPLES:
-- "dipped green fingers into paint" → LITERAL (physical action)
-- "grandmother has green fingers, garden is beautiful" → IDIOMATIC (gardening skill)
-- "became a couch potato watching TV" → IDIOMATIC (lazy behavior)
+Look for context clues:
+- Physical actions (dipping, painting) → LITERAL
+- Skills/behaviors → IDIOMATIC
 
-For: "{sentence}"
-
-Answer: LITERAL or IDIOMATIC?"""
+Answer with ONE word: LITERAL or IDIOMATIC"""
 
         response = self._call_llm_with_retry(
             prompt,

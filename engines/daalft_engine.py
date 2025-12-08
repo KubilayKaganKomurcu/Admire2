@@ -276,30 +276,30 @@ Respond with JSON only:"""
         if explanation:
             explanation_block = f"\nMEANING EXPLANATION:\n{explanation}\n"
         
-        prompt = f"""TASK: Rank images for "{item.compound}" ({sentence_type.upper()} meaning)
+        prompt = f"""TASK: Image Ranking for Idiom Understanding (Caption-Based)
 
+EXPRESSION: "{item.compound}"
 SENTENCE: "{item.sentence}"
+MEANING TYPE: {sentence_type.upper()} ({meaning_desc})
 {explanation_block}
 IMAGE DESCRIPTIONS:
 {self._format_captions(captions)}
 
-FOCUS: Getting the TOP 2 images correct is CRITICAL.
+SCORING CRITERIA:
+- How well would each described image visually represent the {meaning_desc} meaning?
+- Does the description suggest content that captures "{item.compound}" as used here?
+- Consider what visual elements would best convey the intended meaning.
 
-For {sentence_type.upper()} meaning of "{item.compound}":
-{"→ BEST images show the FIGURATIVE concept (the metaphor, not literal objects)" if sentence_type == "idiomatic" else "→ BEST images show PHYSICAL/REAL things (actual objects, colors, actions)"}
+TASK: Assign a score from 1-10 to each image based on its description, then provide a ranking.
 
-SCORING (1-10):
-- 10: Perfect match for {sentence_type} meaning
-- 7-9: Good match, clearly represents intended meaning
-- 4-6: Partial match or ambiguous
-- 1-3: Wrong interpretation (shows {"literal" if sentence_type == "idiomatic" else "figurative"} instead)
-
-OUTPUT (JSON):
+OUTPUT FORMAT (JSON):
 {{
-    "top_2_reasoning": "why these are the best 2 images",
     "scores": [score1, score2, score3, score4, score5],
-    "ranking": [best, second, third, fourth, worst]
-}}"""
+    "ranking": [best_img_num, ..., worst_img_num],
+    "reasoning": "brief explanation"
+}}
+
+Respond with JSON only:"""
 
         response = self._call_llm_with_retry(
             prompt,

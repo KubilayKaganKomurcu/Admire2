@@ -204,28 +204,33 @@ Where X are the image numbers 1-5 in order from best to worst match."""
         meaning_context = "idiomatic (figurative)" if sentence_type == "idiomatic" else "literal (word-for-word)"
         captions = item.get_captions()
         
-        prompt = f"""TASK: Rank images for how well they represent "{item.compound}" used in its {meaning_context} sense.
+        prompt = f"""You are ranking image descriptions for how well they represent a potentially idiomatic expression.
 
-SENTENCE: "{item.sentence}"
-MEANING: {meaning_context.upper()}
+EXPRESSION: "{item.compound}"
+SENTENCE: "{item.sentence}"  
+MEANING TYPE: {meaning_context}
 
-{"IDIOMATIC = figurative meaning (e.g., 'green fingers' = gardening skill, NOT actual green fingers)" if sentence_type == "idiomatic" else "LITERAL = physical/real meaning (e.g., 'green fingers' = fingers actually colored green with paint)"}
+The expression "{item.compound}" is used {meaning_context}ly in this sentence.
 
-IMAGE DESCRIPTIONS:
+Here are descriptions of 5 candidate images:
 {self._format_captions(captions)}
 
-CRITICAL: Focus on selecting the TOP 2 images correctly. These matter most!
+Your task: Rank these images from BEST to WORST based on how well each image description matches the {meaning_context} meaning of "{item.compound}" as used in the sentence.
 
-Step 1: What visual would BEST represent the {meaning_context} meaning?
-Step 2: Which description matches that visual?
-Step 3: What's the SECOND best match?
+RANKING GUIDELINES:
+- If IDIOMATIC: prefer descriptions showing figurative/metaphorical concepts
+- If LITERAL: prefer descriptions showing physical/literal interpretations
+- Consider what visual elements would best convey the intended meaning
 
-For {meaning_context.upper()} "{item.compound}":
-{"- Best images show: the CONCEPT/METAPHOR (gardening, laziness, etc.)" if sentence_type == "idiomatic" else "- Best images show: the PHYSICAL/LITERAL thing (actual colors, objects, actions)"}
-{"- Avoid images showing: the literal/physical interpretation" if sentence_type == "idiomatic" else "- Avoid images showing: metaphorical/figurative interpretations"}
+Think step by step:
+1. What is the {meaning_context} meaning of "{item.compound}"?
+2. Which image description best captures this meaning?
+3. Rank all 5 from best to worst.
 
-OUTPUT (5 image numbers, best first):
-Ranking:"""
+OUTPUT FORMAT (required):
+Ranking: X, X, X, X, X
+
+Where X are image numbers 1-5 in order from best to worst."""
 
         response = self._call_llm_with_retry(
             prompt,
