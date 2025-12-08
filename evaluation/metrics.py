@@ -313,3 +313,4 @@ def compare_rankings(
         "match_ratio": exact_matches / len(ranking1)
     }
 
+
