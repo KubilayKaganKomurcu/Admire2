@@ -200,30 +200,45 @@ class BaseEngine(ABC):
             unlimited: If True, retry forever until success
         """
         import time
+        from datetime import datetime
         
         attempt = 0
         while True:
+            attempt += 1
+            start_time = time.time()
+            print(f"  [API] Attempt {attempt} started at {datetime.now().strftime('%H:%M:%S')}")
+            print(f"  [API] Model: {model or self.config.api.vision_model}, Images: {len(images) if images else 0}")
+            
             try:
                 result = self._call_llm(prompt, images, temperature, max_tokens, model)
+                elapsed = time.time() - start_time
+                
                 # Check for empty response and retry
                 if not result or len(result.strip()) == 0:
-                    print(f"  [RETRY] Empty response on attempt {attempt + 1}, retrying...")
-                    attempt += 1
-                    wait_time = min(30, 2 ** min(attempt, 5))  # Cap at 30 seconds
-                    time.sleep(wait_time)
+                    print(f"  [API] Empty response after {elapsed:.1f}s on attempt {attempt}")
+                    
                     if not unlimited and attempt >= max_retries:
                         print(f"  [RETRY] Max retries ({max_retries}) reached with empty responses")
                         return ""
+                    
+                    # Wait longer between retries: 10s, 20s, 30s, 60s, 60s...
+                    wait_time = min(60, 10 * attempt)
+                    print(f"  [RETRY] Waiting {wait_time}s before retry...")
+                    time.sleep(wait_time)
                     continue
+                
+                print(f"  [API] Success after {elapsed:.1f}s, got {len(result)} chars")
                 return result
+                
             except Exception as e:
-                attempt += 1
-                print(f"  [RETRY] Attempt {attempt} failed: {type(e).__name__}: {e}")
+                elapsed = time.time() - start_time
+                print(f"  [API] Failed after {elapsed:.1f}s: {type(e).__name__}: {e}")
                 
                 if not unlimited and attempt >= max_retries:
                     raise
                 
-                wait_time = min(30, 2 ** min(attempt, 5))  # Cap at 30 seconds
+                # Wait longer between retries: 10s, 20s, 30s, 60s, 60s...
+                wait_time = min(60, 10 * attempt)
                 print(f"  [RETRY] Waiting {wait_time}s before retry...")
                 time.sleep(wait_time)
     
