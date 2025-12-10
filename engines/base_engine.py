@@ -70,7 +70,7 @@ class BaseEngine(ABC):
         self.client = OpenAI(
             api_key=self.config.api.openai_api_key,
             base_url=self.config.api.openai_base_url,
-            timeout=120.0  # 2 minute timeout for image processing
+            timeout=600.0  # 10 minute timeout for image processing
         )
         self.name = self.__class__.__name__
     
