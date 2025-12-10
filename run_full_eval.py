@@ -24,7 +24,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from config import AdMIRe2Config, get_config
 from data_loader import AdMIReItem
-from engines import MIRAEngine, DAALFTEngine, CTYUNLiteEngine
+from engines import MIRAEngine, DAALFTEngine, CTYUNLiteEngine, CategoryEngine
 from evaluation.ensemble import EnsembleAggregator, EnsembleResult
 from evaluation.metrics import AdMIReEvaluator
 
@@ -220,6 +220,9 @@ def run_full_evaluation(
     if "ctyun_lite" in config.ensemble.enabled_engines:
         engines["CTYUN-Lite"] = CTYUNLiteEngine(config)
         logger.log(f"✓ CTYUN-Lite engine loaded")
+    if "category" in config.ensemble.enabled_engines:
+        engines["Category"] = CategoryEngine(config)
+        logger.log(f"✓ CategoryEngine loaded (category-aware ranking)")
     
     aggregator = EnsembleAggregator(config.ensemble)
     evaluator = AdMIReEvaluator()
@@ -430,15 +433,25 @@ def main():
     parser.add_argument("--all", action="store_true", help="Evaluate all samples (ignore max_samples)")
     parser.add_argument("--text-only", action="store_true", dest="text_only",
                         help="Force text-only mode (use captions, skip images)")
+    parser.add_argument("--engine", default=None,
+                        help="Use specific engine only (mira, daalft, ctyun_lite, category)")
     
     args = parser.parse_args()
     
     max_samples = None if args.all else args.max_samples
     
+    # Override enabled engines if specific engine requested
+    if args.engine:
+        from config import CONFIG
+        CONFIG.ensemble.enabled_engines = [args.engine]
+        print(f"Using single engine: {args.engine}")
+    
     print(f"\n{'='*60}")
     print(f"AdMIRe 2.0 Full Evaluation - {args.language}")
     if args.text_only:
         print("MODE: Text-only (captions only, no images)")
+    if args.engine:
+        print(f"ENGINE: {args.engine} only")
     print(f"{'='*60}\n")
     
     run_full_evaluation(
