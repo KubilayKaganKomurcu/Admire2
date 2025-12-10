@@ -153,7 +153,15 @@ def generate_submission(
     
     # Get language code
     lang_code = LANGUAGE_CODES.get(language, language[:2].upper())
-    suffix = f"_test{max_samples}" if max_samples else ""
+    
+    # Build filename with optional suffixes
+    suffixes = []
+    if text_only:
+        suffixes.append("textonly")
+    if max_samples:
+        suffixes.append(f"test{max_samples}")
+    suffix = "_" + "_".join(suffixes) if suffixes else ""
+    
     output_file = os.path.join(output_dir, f"submission_{lang_code}{suffix}.tsv")
     
     print(f"\n{'=' * 60}")
