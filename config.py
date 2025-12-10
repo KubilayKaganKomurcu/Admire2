@@ -19,13 +19,13 @@ class APIConfig:
     openai_base_url: str = "https://api.openai.com/v1"
     
     # Model choices (GPT-5 series)
-    # Options: gpt-5, gpt-5-mini, gpt-5-nano
-    vision_model: str = "gpt-5"  # For image + text (best quality)
-    text_model: str = "gpt-5"  # For text-only (using gpt-5 for reliability)
-    reasoning_model: str = "gpt-5"  # For complex reasoning
+    # Options: gpt-5.1, gpt-5.1-mini, gpt-5.1-nano
+    vision_model: str = "gpt-5.1"  # For image + text (best quality)
+    text_model: str = "gpt-5.1"  # For text-only
+    reasoning_model: str = "gpt-5.1"  # For complex reasoning
     
-    # Alternative: Use gpt-5-mini for text-only to save costs (if it works)
-    # text_model: str = "gpt-5-mini"
+    # Alternative: Use gpt-5.1-mini for text-only to save costs
+    # text_model: str = "gpt-5.1-mini"
     
     # Rate limiting
     max_retries: int = 3
