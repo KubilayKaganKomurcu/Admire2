@@ -12,10 +12,43 @@ from typing import List, Dict, Any, Optional, Tuple
 import json
 
 
-def encode_image_to_base64(image_path: str) -> str:
-    """Encode an image file to base64 string for API calls."""
-    with open(image_path, "rb") as image_file:
-        return base64.b64encode(image_file.read()).decode("utf-8")
+def encode_image_to_base64(image_path: str, max_size: int = 512) -> str:
+    """
+    Encode an image file to base64 string for API calls.
+    Automatically resizes large images to reduce API payload size.
+    
+    Args:
+        image_path: Path to the image file
+        max_size: Maximum width/height in pixels (default 512)
+    """
+    try:
+        from PIL import Image
+        import io
+        
+        # Open and resize image if needed
+        with Image.open(image_path) as img:
+            # Convert to RGB if necessary (handles PNG with transparency)
+            if img.mode in ('RGBA', 'P'):
+                img = img.convert('RGB')
+            
+            # Resize if larger than max_size
+            if img.width > max_size or img.height > max_size:
+                # Calculate new size maintaining aspect ratio
+                ratio = min(max_size / img.width, max_size / img.height)
+                new_size = (int(img.width * ratio), int(img.height * ratio))
+                img = img.resize(new_size, Image.LANCZOS)
+                print(f"    [RESIZE] {image_path}: {img.width}x{img.height}")
+            
+            # Save to bytes buffer as JPEG (smaller than PNG)
+            buffer = io.BytesIO()
+            img.save(buffer, format='JPEG', quality=85)
+            buffer.seek(0)
+            return base64.b64encode(buffer.read()).decode("utf-8")
+    except ImportError:
+        # Fallback if PIL not installed - use original file
+        print("    [WARNING] PIL not installed, using original image size")
+        with open(image_path, "rb") as image_file:
+            return base64.b64encode(image_file.read()).decode("utf-8")
 
 
 def get_image_media_type(image_path: str) -> str:
