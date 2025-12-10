@@ -25,7 +25,8 @@ def add_sentences_to_submission(lang_code: str, language_name: str):
     # Paths
     submission_file = Path(f"submissions/submission_{lang_code}.tsv")
     original_file = Path(f"data/TSVs/submission_{language_name}.tsv")
-    output_file = Path(f"submissions/submission_{lang_code}_with_sentence.tsv")
+    backup_file = Path(f"submissions/submission_{lang_code}_backup.tsv")
+    output_file = submission_file  # Overwrite original after backup
     
     if not submission_file.exists():
         print(f"Submission file not found: {submission_file}")
@@ -53,11 +54,16 @@ def add_sentences_to_submission(lang_code: str, language_name: str):
     if 'sentence' in original_df.columns:
         submission_df['sentence'] = original_df['sentence'].values[:len(submission_df)]
         
-        # Reorder columns: compound, sentence, expected_order
-        cols = ['compound', 'sentence', 'expected_order']
+        # Reorder columns: compound, expected_order, sentence
+        cols = ['compound', 'expected_order', 'sentence']
         submission_df = submission_df[cols]
         
-        # Save
+        # Backup original file first
+        import shutil
+        shutil.copy(submission_file, backup_file)
+        print(f"Backed up to: {backup_file}")
+        
+        # Save (overwrite original)
         submission_df.to_csv(output_file, sep='\t', index=False)
         print(f"Saved to: {output_file}")
         
