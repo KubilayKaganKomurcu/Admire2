@@ -69,7 +69,8 @@ class BaseEngine(ABC):
         self.config = config or get_config()
         self.client = OpenAI(
             api_key=self.config.api.openai_api_key,
-            base_url=self.config.api.openai_base_url
+            base_url=self.config.api.openai_base_url,
+            timeout=120.0  # 2 minute timeout for image processing
         )
         self.name = self.__class__.__name__
     
@@ -190,33 +191,63 @@ class BaseEngine(ABC):
         temperature: float = 0.0,
         max_tokens: int = 1024,
         model: Optional[str] = None,
-        max_retries: int = 3
+        max_retries: int = 10,
+        unlimited: bool = True
     ) -> str:
-        """Call LLM with retry logic."""
+        """Call LLM with retry logic.
+        
+        Args:
+            unlimited: If True, retry forever until success
+        """
         import time
         
-        last_error = None
-        for attempt in range(max_retries):
+        attempt = 0
+        while True:
             try:
-                return self._call_llm(prompt, images, temperature, max_tokens, model)
+                result = self._call_llm(prompt, images, temperature, max_tokens, model)
+                # Check for empty response and retry
+                if not result or len(result.strip()) == 0:
+                    print(f"  [RETRY] Empty response on attempt {attempt + 1}, retrying...")
+                    attempt += 1
+                    wait_time = min(30, 2 ** min(attempt, 5))  # Cap at 30 seconds
+                    time.sleep(wait_time)
+                    if not unlimited and attempt >= max_retries:
+                        print(f"  [RETRY] Max retries ({max_retries}) reached with empty responses")
+                        return ""
+                    continue
+                return result
             except Exception as e:
-                last_error = e
-                if attempt < max_retries - 1:
-                    time.sleep(2 ** attempt)
-        
-        raise last_error
+                attempt += 1
+                print(f"  [RETRY] Attempt {attempt} failed: {type(e).__name__}: {e}")
+                
+                if not unlimited and attempt >= max_retries:
+                    raise
+                
+                wait_time = min(30, 2 ** min(attempt, 5))  # Cap at 30 seconds
+                print(f"  [RETRY] Waiting {wait_time}s before retry...")
+                time.sleep(wait_time)
     
     def _load_images_as_base64(self, image_paths: List[str]) -> List[str]:
         """Load images from paths and encode as base64."""
         from utils.helpers import encode_image_to_base64
         
         encoded = []
-        for path in image_paths:
+        total_size = 0
+        for i, path in enumerate(image_paths):
             if os.path.exists(path):
+                # Check file size
+                file_size = os.path.getsize(path)
+                total_size += file_size
+                size_kb = file_size / 1024
+                if size_kb > 500:
+                    print(f"  [IMAGE] Warning: Image {i+1} is large ({size_kb:.1f}KB): {path}")
+                
                 encoded.append(encode_image_to_base64(path))
             else:
                 # Return empty list if any image is missing
+                print(f"  [IMAGE] Missing: {path}")
                 return []
         
+        print(f"  [IMAGE] Loaded {len(encoded)} images, total size: {total_size/1024:.1f}KB")
         return encoded
 
