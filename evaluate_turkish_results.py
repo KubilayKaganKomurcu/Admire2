@@ -100,20 +100,33 @@ def evaluate_results(json_file: str):
                 print(f"    {engine_name}: first2={eng_first2} → Pos1:{'✓' if eng_pos1_match else '✗'} Pos2:{'✓' if eng_pos2_match else '✗'}")
     
     # Summary
+    pos1_acc = pos1_correct / total_items
+    pos2_acc = pos2_correct / total_items
+    both_acc = both_correct / total_items
+    
+    # Weighted score: Position 1 is 3x more important (75% vs 25%)
+    weighted_score = (pos1_acc * 0.75) + (pos2_acc * 0.25)
+    
     print(f"\n{'=' * 70}")
     print("SUMMARY")
     print(f"{'=' * 70}")
     print(f"Total items evaluated: {total_items}")
-    print(f"Position 1 accuracy: {pos1_correct}/{total_items} = {100*pos1_correct/total_items:.1f}%")
-    print(f"Position 2 accuracy: {pos2_correct}/{total_items} = {100*pos2_correct/total_items:.1f}%")
-    print(f"Both positions correct: {both_correct}/{total_items} = {100*both_correct/total_items:.1f}%")
-    print(f"Average (Pos1 + Pos2): {100*(pos1_correct + pos2_correct)/(2*total_items):.1f}%")
+    print(f"Position 1 accuracy: {pos1_correct}/{total_items} = {100*pos1_acc:.1f}%")
+    print(f"Position 2 accuracy: {pos2_correct}/{total_items} = {100*pos2_acc:.1f}%")
+    print(f"Both positions correct: {both_correct}/{total_items} = {100*both_acc:.1f}%")
+    print(f"\n{'─' * 70}")
+    print(f"WEIGHTED SCORE (75% Pos1 + 25% Pos2):")
+    print(f"  = ({100*pos1_acc:.1f}% × 0.75) + ({100*pos2_acc:.1f}% × 0.25)")
+    print(f"  = {100*pos1_acc*0.75:.1f}% + {100*pos2_acc*0.25:.1f}%")
+    print(f"  = {100*weighted_score:.1f}%")
+    print(f"{'─' * 70}")
     
     return {
         "total": total_items,
-        "pos1_acc": pos1_correct / total_items,
-        "pos2_acc": pos2_correct / total_items,
-        "both_acc": both_correct / total_items
+        "pos1_acc": pos1_acc,
+        "pos2_acc": pos2_acc,
+        "both_acc": both_acc,
+        "weighted_score": weighted_score
     }
 
 
