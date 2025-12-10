@@ -19,21 +19,18 @@ from qwen_vl_utils import process_vision_info
 # 1. CONFIGURATION (FIXED PATHS)
 # ==========================================
 # Path to your saved model (Use the one you trained)
-ADAPTER_PATH = "./best_model_final"
-# ADAPTER_PATH = "/content/drive/MyDrive/My_Saved_Model" # Use this if you moved it to Drive
+ADAPTER_PATH = "Tuggce/best_model_final"
+# ADAPTER_PATH = "/content/drive/MyDrive/My_Saved_Model" 
 
 MODEL_ID = "Qwen/Qwen2-VL-2B-Instruct"
 
-# 🔍 KEY FIX: Point directly to the file you uploaded
+#  KEY FIX: Point directly to the file you uploaded
 TEST_FILES = [
     {"path": "/content/drive/MyDrive/admire_file/submission_Turkish.tsv", "lang": "TR"},
 ]
 
-# Where are your images?
-# If images are in a folder named 'images' in Colab:
+
 IMAGE_ROOT = "/content/drive/MyDrive/admire2_data/Turkish/"
-# If images are in Drive:
-# IMAGE_ROOT = "/content/drive/MyDrive/Subtask A copy/"
 
 # ==========================================
 # 2. LOAD MODEL
@@ -44,9 +41,9 @@ base_model = Qwen2VLForConditionalGeneration.from_pretrained(MODEL_ID, quantizat
 
 try:
     model = PeftModel.from_pretrained(base_model, ADAPTER_PATH)
-    print("✅ Adapter loaded successfully!")
+    print("Adapter loaded successfully!")
 except:
-    print("⚠️ WARNING: Could not load adapter. Using Base Model (Predictions will be random).")
+    print("WARNING: Could not load adapter. Using Base Model (Predictions will be random).")
     model = base_model
 
 processor = AutoProcessor.from_pretrained(MODEL_ID, min_pixels=256*28*28, max_pixels=512*512)
@@ -73,10 +70,10 @@ def generate_submission_fixed(file_config):
         try:
             df = pd.read_csv(path, sep='\t')
         except:
-            print("   -> Failed to read as TSV, trying CSV...")
+            print(" Failed to read as TSV, trying CSV...")
             df = pd.read_csv(path)
 
-        print(f"   -> Loaded {len(df)} rows. Starting prediction...")
+        print(f"  Loaded {len(df)} rows. Starting prediction...")
 
         for i, row in df.iterrows():
             # Prepare Images
