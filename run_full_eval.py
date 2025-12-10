@@ -59,16 +59,22 @@ def load_language_data(
     max_samples: Optional[int] = None
 ) -> List[AdMIReItem]:
     """
-    Load EN or PT data with gold labels.
+    Load language data with gold labels.
     
     Args:
-        language: "EN" or "PT"
+        language: "EN", "PT", "Turkish", etc.
         base_path: Path to data folder
         subset: Filter by subset ("Dev", "Train", "Test") or None for all
         max_samples: Limit number of samples
     """
     base = Path(base_path)
-    tsv_file = base / "TSVs" / f"{language}_subtask_a.tsv"
+    
+    # Handle different TSV naming conventions
+    if language in ["EN", "PT"]:
+        tsv_file = base / "TSVs" / f"{language}_subtask_a.tsv"
+    else:
+        tsv_file = base / "TSVs" / f"submission_{language}.tsv"
+    
     images_base = base / "languages" / language
     
     if not tsv_file.exists():
@@ -146,10 +152,11 @@ def load_language_data(
 
 
 def run_full_evaluation(
-    language: str = "EN",
+    language: str = "Turkish",
     subset: Optional[str] = None,
     max_samples: Optional[int] = None,
-    output_dir: str = "eval_results"
+    output_dir: str = "eval_results",
+    text_only: bool = False
 ):
     """Run comprehensive evaluation with full logging."""
     
@@ -158,8 +165,9 @@ def run_full_evaluation(
     
     # Setup logging
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    log_file = os.path.join(output_dir, f"eval_{language}_{timestamp}.log")
-    results_file = os.path.join(output_dir, f"eval_{language}_{timestamp}.json")
+    mode_suffix = "_textonly" if text_only else ""
+    log_file = os.path.join(output_dir, f"eval_{language}{mode_suffix}_{timestamp}.log")
+    results_file = os.path.join(output_dir, f"eval_{language}{mode_suffix}_{timestamp}.json")
     
     logger = FullLogger(log_file)
     config = get_config()
@@ -171,6 +179,7 @@ def run_full_evaluation(
     logger.log(f"Language: {language}")
     logger.log(f"Subset filter: {subset or 'All'}")
     logger.log(f"Max samples: {max_samples or 'All'}")
+    logger.log(f"Mode: {'TEXT-ONLY (captions)' if text_only else 'MULTIMODAL (images + captions)'}")
     logger.log(f"Vision model: {config.api.vision_model}")
     logger.log(f"Text model: {config.api.text_model}")
     logger.log(f"Enabled engines: {config.ensemble.enabled_engines}")
@@ -232,6 +241,10 @@ def run_full_evaluation(
         logger.log(f"Gold sentence type: {item.sentence_type or 'N/A'}")
         logger.log(f"Gold order: {item.expected_order or 'N/A'}")
         logger.log(f"Image names: {item.image_names}")
+        
+        # Force text-only mode by clearing image paths
+        if text_only:
+            item.image_paths = []  # This forces caption-only mode in engines
         
         # Log captions
         logger.log(f"\nCaptions:")
@@ -409,11 +422,14 @@ def main():
     import argparse
     
     parser = argparse.ArgumentParser(description="Full AdMIRe 2.0 Evaluation")
-    parser.add_argument("--language", default="EN", choices=["EN", "PT"], help="Language to evaluate")
+    parser.add_argument("--language", default="Turkish", 
+                        help="Language to evaluate (EN, PT, Turkish, Chinese, etc.)")
     parser.add_argument("--subset", default=None, choices=["Dev", "Train", "Test"], help="Filter by subset")
     parser.add_argument("--max_samples", type=int, default=None, help="Limit number of samples")
     parser.add_argument("--output_dir", default="eval_results", help="Output directory for logs and results")
     parser.add_argument("--all", action="store_true", help="Evaluate all samples (ignore max_samples)")
+    parser.add_argument("--text-only", action="store_true", dest="text_only",
+                        help="Force text-only mode (use captions, skip images)")
     
     args = parser.parse_args()
     
@@ -421,13 +437,16 @@ def main():
     
     print(f"\n{'='*60}")
     print(f"AdMIRe 2.0 Full Evaluation - {args.language}")
+    if args.text_only:
+        print("MODE: Text-only (captions only, no images)")
     print(f"{'='*60}\n")
     
     run_full_evaluation(
         language=args.language,
         subset=args.subset,
         max_samples=max_samples,
-        output_dir=args.output_dir
+        output_dir=args.output_dir,
+        text_only=args.text_only
     )
 
 
