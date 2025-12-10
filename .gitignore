@@ -37,12 +37,8 @@ env/
 .ipynb_checkpoints/
 
 # Data files (download separately)
-data/subtask_a/english/*.tsv
-data/subtask_a/english/*/
-data/subtask_a/portuguese/*.tsv
-data/subtask_a/portuguese/*/
-data/subtask_b/*.tsv
-data/subtask_b/*/
+data/
+!data/README_reorganization.md
 
 # Outputs
 outputs/
