@@ -25,18 +25,18 @@ from evaluation.metrics import AdMIReEvaluator
 
 
 def load_turkish_data(
-    base_path: str = "data/admire2",
+    base_path: str = "data",
     max_samples: Optional[int] = None
 ) -> List[AdMIReItem]:
     """
     Load Turkish data from the reorganized dataset structure.
     
     Based on README_reorganization.md:
-    - TSV file: data/admire2/TSVs/submission_Turkish.tsv
-    - Images: data/admire2/languages/Turkish/<compound>/
+    - TSV file: data/TSVs/submission_Turkish.tsv
+    - Images: data/languages/Turkish/<compound>/
     
     Args:
-        base_path: Path to the admire2 data folder
+        base_path: Path to the data folder
         max_samples: Maximum number of samples to load (None = all)
     
     Returns:
@@ -49,8 +49,8 @@ def load_turkish_data(
     if not tsv_file.exists():
         print(f"Error: TSV file not found at {tsv_file}")
         print("Make sure you have the data in the correct structure:")
-        print("  data/admire2/TSVs/submission_Turkish.tsv")
-        print("  data/admire2/languages/Turkish/<idiom_folders>/")
+        print("  data/TSVs/submission_Turkish.tsv")
+        print("  data/languages/Turkish/<idiom_folders>/")
         return []
     
     # Read TSV
@@ -246,14 +246,14 @@ def main():
     
     # Load Turkish data (only a few samples for demo)
     items = load_turkish_data(
-        base_path="data/admire2",
+        base_path="data",
         max_samples=3  # Limit to 3 examples for testing
     )
     
     if not items:
         print("\n❌ No data loaded. Please ensure the data is in place:")
-        print("   1. data/admire2/TSVs/submission_Turkish.tsv")
-        print("   2. data/admire2/languages/Turkish/<idiom_folders>/")
+        print("   1. data/TSVs/submission_Turkish.tsv")
+        print("   2. data/languages/Turkish/<idiom_folders>/")
         return
     
     # Show sample data info
