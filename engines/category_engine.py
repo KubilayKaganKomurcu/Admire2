@@ -171,62 +171,76 @@ Answer with ONE word: LITERAL or IDIOMATIC"""
         """Build prompt for LITERAL usage - find images with actual objects."""
         
         words_str = " AND ".join([f'"{w}"' for w in compound_words])
+        word_list = " and ".join([f'"{w}"' for w in compound_words])
         
         return f"""TASK: Rank images for LITERAL usage of "{item.compound}"
 
 CONTEXT: "{item.sentence}"
 
-The expression "{item.compound}" is used LITERALLY here - meaning the actual, physical objects.
+The expression "{item.compound}" is used LITERALLY - we want images showing the actual physical objects.
 
-IMAGE CATEGORIES (each set typically contains):
-1. LITERAL - shows the exact objects: {words_str} (BEST MATCH)
-2. LITERAL-RELATED - shows related objects but not exact
-3. IDIOMATIC - shows figurative meaning (WRONG for literal usage)
-4. IDIOMATIC-RELATED - close to figurative (WRONG)
-5. DISTRACTOR - superficially related but irrelevant
+ANALYSIS METHOD for each image:
+1. Check: Does the image contain {word_list}?
+   - YES (both words visible) → LITERAL (rank highest)
+   - PARTIAL (only one word visible) → LITERAL-RELATED (rank second)
+   - NO (neither word) → Probably IDIOMATIC/IDIOMATIC-RELATED/DISTRACTOR (rank lower)
 
-YOUR TASK for LITERAL usage:
-✓ RANK HIGHEST: Images showing the ACTUAL objects {words_str}
-✓ RANK SECOND: Images showing related physical objects
-✗ RANK LOWEST: Images showing abstract/figurative concepts (these are WRONG)
+2. For images without {word_list}:
+   - Does it show something similar to literal but completely different? → DISTRACTOR (rank lowest)
+   - Does it show abstract/figurative concepts? → IDIOMATIC/IDIOMATIC-RELATED (rank low)
 
-Look at the 5 images. Find the ones that literally show {words_str}.
+RANKING STRATEGY:
+✓ BEST (Rank 1-2): Images containing {word_list} - these are LITERAL
+✓ GOOD (Rank 3): Images with only one word - these are LITERAL-RELATED  
+✗ AVOID (Rank 4-5): Images without the words - these are wrong for literal usage
 
 For reference, captions:
 {self._format_captions(item.image_captions)}
 
-Provide your ranking from BEST to WORST:
+Analyze each image systematically and provide ranking:
 Ranking: N, N, N, N, N"""
     
     def _build_idiomatic_prompt(self, item: AdMIReItem, compound_words: List[str]) -> str:
         """Build prompt for IDIOMATIC usage - find figurative meaning, avoid literal."""
         
         words_str = " or ".join([f'"{w}"' for w in compound_words])
+        word_list = " and ".join([f'"{w}"' for w in compound_words])
         
         return f"""TASK: Rank images for IDIOMATIC usage of "{item.compound}"
 
 CONTEXT: "{item.sentence}"
 
-The expression "{item.compound}" is used IDIOMATICALLY here - meaning its figurative/metaphorical sense.
+The expression "{item.compound}" is used IDIOMATICALLY - we want images showing the figurative meaning, NOT the literal objects.
 
-IMAGE CATEGORIES (each set typically contains):
-1. LITERAL - shows actual {words_str} objects (WRONG for idiomatic usage!)
-2. LITERAL-RELATED - shows related physical objects (WRONG)
-3. IDIOMATIC - shows the figurative meaning (BEST MATCH)
-4. IDIOMATIC-RELATED - close to figurative meaning
-5. DISTRACTOR - superficially related but irrelevant
+ANALYSIS METHOD for each image:
 
-YOUR TASK for IDIOMATIC usage:
-✗ AVOID: Images showing actual {words_str} - these are WRONG for idiomatic meaning
-✓ RANK HIGHEST: Images showing the FIGURATIVE meaning of "{item.compound}"
-✓ Think: What does "{item.compound}" MEAN as an idiom? Find that concept.
+STEP 1: Check for literal objects (AVOID these!)
+- Does the image contain {word_list}?
+  - YES → LITERAL (WRONG! Rank lowest)
+  - PARTIAL (only one word) → LITERAL-RELATED (WRONG! Rank low)
+  - NO → Continue to Step 2
 
-IMPORTANT: Do NOT pick images with literal {words_str}!
+STEP 2: For images WITHOUT {word_list}, check idiomatic meaning:
+- What is the idiomatic meaning of "{item.compound}"?
+- Does the image show this idiomatic meaning?
+  - YES, clearly → IDIOMATIC (BEST! Rank highest)
+  - CLOSE but not quite → IDIOMATIC-RELATED (Rank second)
+  - NO → Continue to Step 3
+
+STEP 3: Check for distractors:
+- Does the image show something similar to literal but completely different/irrelevant?
+  - YES → DISTRACTOR (Rank lowest)
+  - NO → Probably IDIOMATIC-RELATED
+
+RANKING STRATEGY:
+✓ BEST (Rank 1-2): Images showing the idiomatic meaning of "{item.compound}" (NO {word_list} visible)
+✓ GOOD (Rank 3): Images close to idiomatic meaning
+✗ AVOID (Rank 4-5): Images with {word_list} - these are WRONG for idiomatic usage!
 
 For reference, captions:
 {self._format_captions(item.image_captions)}
 
-Provide your ranking from BEST to WORST:
+Analyze each image systematically and provide ranking:
 Ranking: N, N, N, N, N"""
     
     def _build_literal_caption_prompt(
@@ -238,24 +252,33 @@ Ranking: N, N, N, N, N"""
         """Build caption-only prompt for LITERAL usage."""
         
         words_str = " AND ".join([f'"{w}"' for w in compound_words])
+        word_list = " and ".join([f'"{w}"' for w in compound_words])
         
         return f"""TASK: Rank image descriptions for LITERAL usage of "{item.compound}"
 
 CONTEXT: "{item.sentence}"
 
-The expression is used LITERALLY - we want images showing the actual objects.
+The expression is used LITERALLY - we want images showing the actual physical objects.
 
 IMAGE DESCRIPTIONS:
 {self._format_captions(captions)}
 
-YOUR TASK:
-Since this is LITERAL usage, find descriptions that mention actual {words_str}.
-✓ BEST: Descriptions mentioning {words_str} directly
-✓ GOOD: Descriptions of related physical objects
-✗ WRONG: Abstract concepts, people, figurative scenes
+ANALYSIS METHOD for each description:
+1. Check: Does the description mention {word_list}?
+   - YES (both words mentioned) → LITERAL (rank highest)
+   - PARTIAL (only one word mentioned) → LITERAL-RELATED (rank second)
+   - NO (neither word) → Probably IDIOMATIC/IDIOMATIC-RELATED/DISTRACTOR (rank lower)
 
-Which descriptions show actual {words_str}? Rank those highest.
+2. For descriptions without {word_list}:
+   - Does it describe something similar to literal but completely different? → DISTRACTOR (rank lowest)
+   - Does it describe abstract/figurative concepts? → IDIOMATIC/IDIOMATIC-RELATED (rank low)
 
+RANKING STRATEGY:
+✓ BEST (Rank 1-2): Descriptions mentioning {word_list} - these are LITERAL
+✓ GOOD (Rank 3): Descriptions with only one word - these are LITERAL-RELATED
+✗ AVOID (Rank 4-5): Descriptions without the words - these are wrong for literal usage
+
+Analyze each description systematically:
 Ranking: N, N, N, N, N"""
     
     def _build_idiomatic_caption_prompt(
@@ -267,24 +290,43 @@ Ranking: N, N, N, N, N"""
         """Build caption-only prompt for IDIOMATIC usage."""
         
         words_str = " or ".join([f'"{w}"' for w in compound_words])
+        word_list = " and ".join([f'"{w}"' for w in compound_words])
         
         return f"""TASK: Rank image descriptions for IDIOMATIC usage of "{item.compound}"
 
 CONTEXT: "{item.sentence}"
 
-The expression is used IDIOMATICALLY - we want images showing the FIGURATIVE meaning.
+The expression is used IDIOMATICALLY - we want images showing the figurative meaning, NOT the literal objects.
 
 IMAGE DESCRIPTIONS:
 {self._format_captions(captions)}
 
-YOUR TASK:
-Since this is IDIOMATIC usage:
-✗ AVOID descriptions mentioning actual {words_str} - those are WRONG!
-✓ BEST: Descriptions showing the figurative meaning of "{item.compound}"
-✓ Think: What does this idiom MEAN? Find descriptions matching that concept.
+ANALYSIS METHOD for each description:
 
-IMPORTANT: Descriptions with literal {words_str} should be ranked LOWEST.
+STEP 1: Check for literal objects (AVOID these!)
+- Does the description mention {word_list}?
+  - YES → LITERAL (WRONG! Rank lowest)
+  - PARTIAL (only one word) → LITERAL-RELATED (WRONG! Rank low)
+  - NO → Continue to Step 2
 
+STEP 2: For descriptions WITHOUT {word_list}, check idiomatic meaning:
+- What is the idiomatic meaning of "{item.compound}"?
+- Does the description suggest an image showing this idiomatic meaning?
+  - YES, clearly → IDIOMATIC (BEST! Rank highest)
+  - CLOSE but not quite → IDIOMATIC-RELATED (Rank second)
+  - NO → Continue to Step 3
+
+STEP 3: Check for distractors:
+- Does the description suggest something similar to literal but completely different/irrelevant?
+  - YES → DISTRACTOR (Rank lowest)
+  - NO → Probably IDIOMATIC-RELATED
+
+RANKING STRATEGY:
+✓ BEST (Rank 1-2): Descriptions suggesting the idiomatic meaning of "{item.compound}" (NO {word_list} mentioned)
+✓ GOOD (Rank 3): Descriptions close to idiomatic meaning
+✗ AVOID (Rank 4-5): Descriptions with {word_list} - these are WRONG for idiomatic usage!
+
+Analyze each description systematically:
 Ranking: N, N, N, N, N"""
     
     def _format_captions(self, captions: List[str]) -> str:
