@@ -245,23 +245,41 @@ class BaseEngine(ABC):
     def _load_images_as_base64(self, image_paths: List[str]) -> List[str]:
         """Load images from paths and encode as base64."""
         from utils.helpers import encode_image_to_base64
+        from pathlib import Path
         
         encoded = []
         total_size = 0
         for i, path in enumerate(image_paths):
-            if os.path.exists(path):
-                # Check file size
-                file_size = os.path.getsize(path)
-                total_size += file_size
-                size_kb = file_size / 1024
-                if size_kb > 500:
-                    print(f"  [IMAGE] Warning: Image {i+1} is large ({size_kb:.1f}KB): {path}")
-                
-                encoded.append(encode_image_to_base64(path))
-            else:
-                # Return empty list if any image is missing
-                print(f"  [IMAGE] Missing: {path}")
-                return []
+            actual_path = path
+            
+            # Try original path first
+            if not os.path.exists(path):
+                # Try alternative extensions (in case resize script changed them)
+                p = Path(path)
+                alternatives = [
+                    p.with_suffix('.jpg'),
+                    p.with_suffix('.jpeg'),
+                    p.with_suffix('.png'),
+                    p.with_suffix('.PNG'),
+                    p.with_suffix('.JPG'),
+                ]
+                for alt in alternatives:
+                    if alt.exists():
+                        actual_path = str(alt)
+                        break
+                else:
+                    # No alternative found
+                    print(f"  [IMAGE] Missing: {path}")
+                    return []
+            
+            # Check file size
+            file_size = os.path.getsize(actual_path)
+            total_size += file_size
+            size_kb = file_size / 1024
+            if size_kb > 500:
+                print(f"  [IMAGE] Warning: Image {i+1} is large ({size_kb:.1f}KB): {actual_path}")
+            
+            encoded.append(encode_image_to_base64(actual_path))
         
         print(f"  [IMAGE] Loaded {len(encoded)} images, total size: {total_size/1024:.1f}KB")
         return encoded

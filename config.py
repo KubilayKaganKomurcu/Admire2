@@ -21,11 +21,10 @@ class APIConfig:
     # Model choices (GPT-5 series)
     # Options: gpt-5, gpt-5-mini, gpt-5-nano
     vision_model: str = "gpt-5"  # For image + text (best quality)
-    text_model: str = "gpt-5-mini"  # For text-only (cheaper, still excellent)
+    text_model: str = "gpt-5"  # For text-only (using gpt-5 for reliability)
     reasoning_model: str = "gpt-5"  # For complex reasoning
     
-    # Alternative: Use gpt-5-mini for everything to save costs
-    # vision_model: str = "gpt-5-mini"
+    # Alternative: Use gpt-5-mini for text-only to save costs (if it works)
     # text_model: str = "gpt-5-mini"
     
     # Rate limiting
