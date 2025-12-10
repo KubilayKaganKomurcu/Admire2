@@ -1,0 +1,529 @@
+{
+  "metadata": {
+    "language": "Turkish",
+    "subset": null,
+    "max_samples": 5,
+    "timestamp": "20251210_174001",
+    "config": {
+      "vision_model": "gpt-5.1",
+      "text_model": "gpt-5.1",
+      "enabled_engines": [
+        "mira",
+        "daalft",
+        "ctyun_lite"
+      ],
+      "aggregation_method": "weighted_borda"
+    }
+  },
+  "metrics": {
+    "DCG": 0.0,
+    "NDCG": 0.0,
+    "Acc@1": 0.0,
+    "Acc@3": 0.0,
+    "MRR": 0.0,
+    "SentenceTypeAcc": 0.0,
+    "N": 0
+  },
+  "results": [
+    {
+      "item_id": "Turkish_0",
+      "compound": "çürük elma",
+      "sentence": "Bir kuruluş içinden birkaç çürük elma çıktı diye, şaibeli sayılır mı; sayılmaz elbet.",
+      "subset": "unknown",
+      "gold_type": null,
+      "gold_order": null,
+      "image_names": [
+        "88565564832.png",
+        "46081287159.png",
+        "85682258634.png",
+        "96034096013.png",
+        "10884367753.png"
+      ],
+      "engine_results": {
+        "MIRA": {
+          "sentence_type": "idiomatic",
+          "sentence_type_confidence": 0.8,
+          "ranking": [
+            3,
+            1,
+            2,
+            4,
+            5
+          ],
+          "ranking_confidence": 0.9617692030835673,
+          "image_scores": [
+            0.6666666666666666,
+            0.8666666666666667,
+            0.8666666666666667,
+            0.3333333333333333,
+            0.26666666666666666
+          ],
+          "processing_time": 19.567679405212402,
+          "reasoning": "Aggregated from 3 samples"
+        },
+        "DAALFT": {
+          "sentence_type": "idiomatic",
+          "sentence_type_confidence": 0.99,
+          "ranking": [
+            1,
+            2,
+            5,
+            3,
+            4
+          ],
+          "ranking_confidence": 0.8,
+          "image_scores": [
+            0.9,
+            0.6,
+            0.1,
+            0.1,
+            0.2
+          ],
+          "processing_time": 11.404677391052246,
+          "reasoning": "DETECT: The phrase is used about people within an organization, not actual apples. It refers to a few bad or corrupt members causing suspicion about the whole institution, describing character/behavior rather than literal rotten fruit.\n\nEXPLAIN: In this context, “çürük elma” figuratively means a few bad, corrupt, or morally questionable people within an otherwise decent organization—individuals whose actions are dishonest, unethical, or damaging, but who do not represent the whole group.  \nVisua"
+        },
+        "CTYUN-Lite": {
+          "sentence_type": "idiomatic",
+          "sentence_type_confidence": 0.8,
+          "ranking": [
+            3,
+            4,
+            2,
+            1,
+            5
+          ],
+          "ranking_confidence": 0.7,
+          "image_scores": [
+            0.6,
+            0.4,
+            0.8,
+            1.0,
+            0.2
+          ],
+          "processing_time": 2.4988722801208496,
+          "reasoning": "Direct caption-based ranking"
+        }
+      },
+      "ensemble_result": {
+        "sentence_type": "idiomatic",
+        "sentence_type_confidence": 0.9999995884775356,
+        "ranking": [
+          2,
+          1,
+          4,
+          3,
+          5
+        ],
+        "ranking_confidence": 0.6214285714285714,
+        "agreement_score": 0.19999999999999998,
+        "predicted_order": [
+          "46081287159.png",
+          "88565564832.png",
+          "96034096013.png",
+          "85682258634.png",
+          "10884367753.png"
+        ]
+      }
+    },
+    {
+      "item_id": "Turkish_1",
+      "compound": "çürük elma",
+      "sentence": "Çürük elmaların var olduğu bir toplumsal sözleşme varlığını sürdüremez.",
+      "subset": "unknown",
+      "gold_type": null,
+      "gold_order": null,
+      "image_names": [
+        "88565564832.png",
+        "96034096013.png",
+        "46081287159.png",
+        "10884367753.png",
+        "85682258634.png"
+      ],
+      "engine_results": {
+        "MIRA": {
+          "sentence_type": "idiomatic",
+          "sentence_type_confidence": 0.8,
+          "ranking": [
+            4,
+            3,
+            2,
+            5,
+            1
+          ],
+          "ranking_confidence": 0.6123724356957945,
+          "image_scores": [
+            0.5333333333333333,
+            0.6,
+            0.7333333333333334,
+            0.3333333333333333,
+            0.7999999999999999
+          ],
+          "processing_time": 16.342893362045288,
+          "reasoning": "Aggregated from 3 samples"
+        },
+        "DAALFT": {
+          "sentence_type": "idiomatic",
+          "sentence_type_confidence": 0.96,
+          "ranking": [
+            1,
+            3,
+            5,
+            2,
+            4
+          ],
+          "ranking_confidence": 0.8,
+          "image_scores": [
+            0.7,
+            0.2,
+            0.6,
+            0.1,
+            0.3
+          ],
+          "processing_time": 7.914577007293701,
+          "reasoning": "DETECT: The sentence discusses the sustainability of a social contract, an abstract societal concept, not actual physical apples. In this context, “çürük elmaların var olduğu” refers metaphorically to corrupt or harmful individuals within a society, making “çürük elma” idiomatic rather than literal.\n\nEXPLAIN: In this context, \"çürük elma\" metaphorically refers to a corrupt, harmful, or morally problematic individual whose presence damages the whole group or system, just as one rotten apple can s"
+        },
+        "CTYUN-Lite": {
+          "sentence_type": "idiomatic",
+          "sentence_type_confidence": 0.8,
+          "ranking": [
+            3,
+            1,
+            5,
+            2,
+            4
+          ],
+          "ranking_confidence": 0.7,
+          "image_scores": [
+            0.6,
+            1.0,
+            0.2,
+            0.8,
+            0.4
+          ],
+          "processing_time": 3.294673204421997,
+          "reasoning": "Direct caption-based ranking"
+        }
+      },
+      "ensemble_result": {
+        "sentence_type": "idiomatic",
+        "sentence_type_confidence": 0.9999995833335069,
+        "ranking": [
+          2,
+          1,
+          5,
+          4,
+          3
+        ],
+        "ranking_confidence": 0.575,
+        "agreement_score": 0.26666666666666666,
+        "predicted_order": [
+          "96034096013.png",
+          "88565564832.png",
+          "85682258634.png",
+          "10884367753.png",
+          "46081287159.png"
+        ]
+      }
+    },
+    {
+      "item_id": "Turkish_2",
+      "compound": "çürük elma",
+      "sentence": "Sosyal medyada paylaşılan görüntüde, çürük elmaların meyve suyu yapılması için fabrikalara gönderildiği, halk sağlığının tehlikeye atıldığı ileri sürüldü.",
+      "subset": "unknown",
+      "gold_type": null,
+      "gold_order": null,
+      "image_names": [
+        "96034096013.png",
+        "46081287159.png",
+        "85682258634.png",
+        "88565564832.png",
+        "10884367753.png"
+      ],
+      "engine_results": {
+        "MIRA": {
+          "sentence_type": "literal",
+          "sentence_type_confidence": 0.8,
+          "ranking": [
+            3,
+            1,
+            5,
+            2,
+            4
+          ],
+          "ranking_confidence": 0.9874208829065749,
+          "image_scores": [
+            0.4666666666666666,
+            1.0,
+            0.26666666666666666,
+            0.8000000000000002,
+            0.4666666666666666
+          ],
+          "processing_time": 12.671040773391724,
+          "reasoning": "Aggregated from 3 samples"
+        },
+        "DAALFT": {
+          "sentence_type": "literal",
+          "sentence_type_confidence": 0.99,
+          "ranking": [
+            2,
+            4,
+            5,
+            1,
+            3
+          ],
+          "ranking_confidence": 0.8,
+          "image_scores": [
+            0.1,
+            0.6,
+            0.0,
+            0.5,
+            0.4
+          ],
+          "processing_time": 11.335501194000244,
+          "reasoning": "DETECT: The sentence talks about rotten apples being sent to factories to be made into juice, which is a concrete, physical scenario about actual fruit and public health, not a figurative description of people or character.\n\nEXPLAIN: In this context, “çürük elma” literally refers to apples that have begun to decay—soft, bruised, discolored, moldy, or otherwise spoiled and unfit for safe consumption. Visually, this would be best represented by apples with brown or black spots, wrinkled or collaps"
+        },
+        "CTYUN-Lite": {
+          "sentence_type": "literal",
+          "sentence_type_confidence": 0.8,
+          "ranking": [
+            2,
+            4,
+            5,
+            1,
+            3
+          ],
+          "ranking_confidence": 0.7,
+          "image_scores": [
+            0.8,
+            0.4,
+            0.2,
+            1.0,
+            0.6
+          ],
+          "processing_time": 2.0469369888305664,
+          "reasoning": "Direct caption-based ranking"
+        }
+      },
+      "ensemble_result": {
+        "sentence_type": "literal",
+        "sentence_type_confidence": 0.9999995884775356,
+        "ranking": [
+          2,
+          3,
+          5,
+          1,
+          4
+        ],
+        "ranking_confidence": 0.6821428571428572,
+        "agreement_score": 0.4666666666666666,
+        "predicted_order": [
+          "88565564832.png",
+          "96034096013.png",
+          "46081287159.png",
+          "10884367753.png",
+          "85682258634.png"
+        ]
+      }
+    },
+    {
+      "item_id": "Turkish_3",
+      "compound": "çürük elma",
+      "sentence": "Çürük elma, insan sağlığı için tehlikeli olabilir çünkü: Mikotoksin içerebilir.",
+      "subset": "unknown",
+      "gold_type": null,
+      "gold_order": null,
+      "image_names": [
+        "46081287159.png",
+        "88565564832.png",
+        "10884367753.png",
+        "85682258634.png",
+        "96034096013.png"
+      ],
+      "engine_results": {
+        "MIRA": {
+          "sentence_type": "literal",
+          "sentence_type_confidence": 0.8,
+          "ranking": [
+            1,
+            2,
+            3,
+            5,
+            4
+          ],
+          "ranking_confidence": 1.0,
+          "image_scores": [
+            1.0,
+            0.8000000000000002,
+            0.6,
+            0.26666666666666666,
+            0.3333333333333333
+          ],
+          "processing_time": 9.49322772026062,
+          "reasoning": "Aggregated from 3 samples"
+        },
+        "DAALFT": {
+          "sentence_type": "literal",
+          "sentence_type_confidence": 0.97,
+          "ranking": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "ranking_confidence": 0.8,
+          "image_scores": [
+            0.9,
+            0.4,
+            0.2,
+            0.1,
+            0.1
+          ],
+          "processing_time": 9.758039712905884,
+          "reasoning": "DETECT: The sentence discusses a rotten apple as a physical object that can contain mycotoxins and be dangerous to human health. This is about an actual, spoiled fruit and its biological risk, not a metaphor for a bad person or harmful influence.\n\nEXPLAIN: 1. Here, “çürük elma” literally means an apple that has begun to decompose, with its flesh and/or skin damaged by rot and potentially contaminated by mold and microorganisms that can produce mycotoxins harmful to human health. It does not carr"
+        },
+        "CTYUN-Lite": {
+          "sentence_type": "literal",
+          "sentence_type_confidence": 0.8,
+          "ranking": [
+            1,
+            2,
+            3,
+            5,
+            4
+          ],
+          "ranking_confidence": 0.7,
+          "image_scores": [
+            1.0,
+            0.8,
+            0.6,
+            0.2,
+            0.4
+          ],
+          "processing_time": 2.7311859130859375,
+          "reasoning": "Direct caption-based ranking"
+        }
+      },
+      "ensemble_result": {
+        "sentence_type": "literal",
+        "sentence_type_confidence": 0.9999995850624128,
+        "ranking": [
+          1,
+          2,
+          3,
+          5,
+          4
+        ],
+        "ranking_confidence": 0.6821428571428572,
+        "agreement_score": 0.7333333333333334,
+        "predicted_order": [
+          "46081287159.png",
+          "88565564832.png",
+          "10884367753.png",
+          "96034096013.png",
+          "85682258634.png"
+        ]
+      }
+    },
+    {
+      "item_id": "Turkish_4",
+      "compound": "kara kutu",
+      "sentence": "Derin öğrenme neden kara kutu olarak görülüyor?",
+      "subset": "unknown",
+      "gold_type": null,
+      "gold_order": null,
+      "image_names": [
+        "14611993362.png",
+        "76095207275.png",
+        "55008421495.png",
+        "42749624665.png",
+        "77894435620.png"
+      ],
+      "engine_results": {
+        "MIRA": {
+          "sentence_type": "idiomatic",
+          "sentence_type_confidence": 0.8,
+          "ranking": [
+            2,
+            4,
+            1,
+            5,
+            3
+          ],
+          "ranking_confidence": 1.0,
+          "image_scores": [
+            0.8000000000000002,
+            0.4000000000000001,
+            1.0,
+            0.20000000000000004,
+            0.6
+          ],
+          "processing_time": 25.86132788658142,
+          "reasoning": "Aggregated from 3 samples"
+        },
+        "DAALFT": {
+          "sentence_type": "idiomatic",
+          "sentence_type_confidence": 0.98,
+          "ranking": [
+            3,
+            5,
+            1,
+            4,
+            2
+          ],
+          "ranking_confidence": 0.8,
+          "image_scores": [
+            0.3,
+            0.1,
+            0.9,
+            0.2,
+            0.4
+          ],
+          "processing_time": 8.276182651519775,
+          "reasoning": "DETECT: The sentence discusses deep learning (an abstract concept) and why it is seen as a 'black box', which is a common figurative expression meaning something whose inner workings are not understood, not a reference to a literal black-colored physical box.\n\nEXPLAIN: Here, “kara kutu” means a system whose inner workings are opaque: you can see the inputs and outputs, but you cannot clearly understand or observe what happens in between. Visually, this is best represented by a closed, dark box w"
+        },
+        "CTYUN-Lite": {
+          "sentence_type": "idiomatic",
+          "sentence_type_confidence": 0.8,
+          "ranking": [
+            3,
+            2,
+            1,
+            5,
+            4
+          ],
+          "ranking_confidence": 0.7,
+          "image_scores": [
+            0.6,
+            0.8,
+            1.0,
+            0.2,
+            0.4
+          ],
+          "processing_time": 2.131351947784424,
+          "reasoning": "Direct caption-based ranking"
+        }
+      },
+      "ensemble_result": {
+        "sentence_type": "idiomatic",
+        "sentence_type_confidence": 0.9999995867770302,
+        "ranking": [
+          2,
+          4,
+          1,
+          5,
+          3
+        ],
+        "ranking_confidence": 0.6821428571428572,
+        "agreement_score": 0.3333333333333333,
+        "predicted_order": [
+          "55008421495.png",
+          "14611993362.png",
+          "77894435620.png",
+          "76095207275.png",
+          "42749624665.png"
+        ]
+      }
+    }
+  ]
+}

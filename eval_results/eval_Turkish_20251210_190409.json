@@ -1,0 +1,547 @@
+{
+  "metadata": {
+    "language": "Turkish",
+    "subset": null,
+    "max_samples": 10,
+    "timestamp": "20251210_190409",
+    "config": {
+      "vision_model": "gpt-5.1",
+      "text_model": "gpt-5.1",
+      "enabled_engines": [
+        "category"
+      ],
+      "aggregation_method": "weighted_borda"
+    }
+  },
+  "metrics": {
+    "DCG": 0.0,
+    "NDCG": 0.0,
+    "Acc@1": 0.0,
+    "Acc@3": 0.0,
+    "MRR": 0.0,
+    "SentenceTypeAcc": 0.0,
+    "N": 0
+  },
+  "results": [
+    {
+      "item_id": "Turkish_0",
+      "compound": "çürük elma",
+      "sentence": "Bir kuruluş içinden birkaç çürük elma çıktı diye, şaibeli sayılır mı; sayılmaz elbet.",
+      "subset": "unknown",
+      "gold_type": null,
+      "gold_order": null,
+      "image_names": [
+        "88565564832.png",
+        "46081287159.png",
+        "85682258634.png",
+        "96034096013.png",
+        "10884367753.png"
+      ],
+      "engine_results": {
+        "Category": {
+          "sentence_type": "idiomatic",
+          "sentence_type_confidence": 0.8,
+          "ranking": [
+            3,
+            4,
+            1,
+            2,
+            5
+          ],
+          "ranking_confidence": 0.8,
+          "image_scores": null,
+          "processing_time": 8.8976891040802,
+          "reasoning": "Category-aware ranking for idiomatic usage"
+        }
+      },
+      "ensemble_result": {
+        "sentence_type": "idiomatic",
+        "sentence_type_confidence": 0.9999987500015625,
+        "ranking": [
+          3,
+          4,
+          1,
+          2,
+          5
+        ],
+        "ranking_confidence": 0.7,
+        "agreement_score": 1.0,
+        "predicted_order": [
+          "85682258634.png",
+          "96034096013.png",
+          "88565564832.png",
+          "46081287159.png",
+          "10884367753.png"
+        ]
+      }
+    },
+    {
+      "item_id": "Turkish_1",
+      "compound": "çürük elma",
+      "sentence": "Çürük elmaların var olduğu bir toplumsal sözleşme varlığını sürdüremez.",
+      "subset": "unknown",
+      "gold_type": null,
+      "gold_order": null,
+      "image_names": [
+        "88565564832.png",
+        "96034096013.png",
+        "46081287159.png",
+        "10884367753.png",
+        "85682258634.png"
+      ],
+      "engine_results": {
+        "Category": {
+          "sentence_type": "idiomatic",
+          "sentence_type_confidence": 0.8,
+          "ranking": [
+            5,
+            2,
+            4,
+            3,
+            1
+          ],
+          "ranking_confidence": 0.8,
+          "image_scores": null,
+          "processing_time": 7.2270121574401855,
+          "reasoning": "Category-aware ranking for idiomatic usage"
+        }
+      },
+      "ensemble_result": {
+        "sentence_type": "idiomatic",
+        "sentence_type_confidence": 0.9999987500015625,
+        "ranking": [
+          5,
+          2,
+          4,
+          3,
+          1
+        ],
+        "ranking_confidence": 0.7,
+        "agreement_score": 1.0,
+        "predicted_order": [
+          "85682258634.png",
+          "96034096013.png",
+          "10884367753.png",
+          "46081287159.png",
+          "88565564832.png"
+        ]
+      }
+    },
+    {
+      "item_id": "Turkish_2",
+      "compound": "çürük elma",
+      "sentence": "Sosyal medyada paylaşılan görüntüde, çürük elmaların meyve suyu yapılması için fabrikalara gönderildiği, halk sağlığının tehlikeye atıldığı ileri sürüldü.",
+      "subset": "unknown",
+      "gold_type": null,
+      "gold_order": null,
+      "image_names": [
+        "96034096013.png",
+        "46081287159.png",
+        "85682258634.png",
+        "88565564832.png",
+        "10884367753.png"
+      ],
+      "engine_results": {
+        "Category": {
+          "sentence_type": "literal",
+          "sentence_type_confidence": 0.8,
+          "ranking": [
+            2,
+            4,
+            1,
+            3,
+            5
+          ],
+          "ranking_confidence": 0.8,
+          "image_scores": null,
+          "processing_time": 3.0013320446014404,
+          "reasoning": "Category-aware ranking for literal usage"
+        }
+      },
+      "ensemble_result": {
+        "sentence_type": "literal",
+        "sentence_type_confidence": 0.9999987500015625,
+        "ranking": [
+          2,
+          4,
+          1,
+          3,
+          5
+        ],
+        "ranking_confidence": 0.7,
+        "agreement_score": 1.0,
+        "predicted_order": [
+          "85682258634.png",
+          "96034096013.png",
+          "88565564832.png",
+          "46081287159.png",
+          "10884367753.png"
+        ]
+      }
+    },
+    {
+      "item_id": "Turkish_3",
+      "compound": "çürük elma",
+      "sentence": "Çürük elma, insan sağlığı için tehlikeli olabilir çünkü: Mikotoksin içerebilir.",
+      "subset": "unknown",
+      "gold_type": null,
+      "gold_order": null,
+      "image_names": [
+        "46081287159.png",
+        "88565564832.png",
+        "10884367753.png",
+        "85682258634.png",
+        "96034096013.png"
+      ],
+      "engine_results": {
+        "Category": {
+          "sentence_type": "literal",
+          "sentence_type_confidence": 0.8,
+          "ranking": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "ranking_confidence": 0.8,
+          "image_scores": null,
+          "processing_time": 3.646278142929077,
+          "reasoning": "Category-aware ranking for literal usage"
+        }
+      },
+      "ensemble_result": {
+        "sentence_type": "literal",
+        "sentence_type_confidence": 0.9999987500015625,
+        "ranking": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "ranking_confidence": 0.7,
+        "agreement_score": 1.0,
+        "predicted_order": [
+          "46081287159.png",
+          "88565564832.png",
+          "10884367753.png",
+          "85682258634.png",
+          "96034096013.png"
+        ]
+      }
+    },
+    {
+      "item_id": "Turkish_4",
+      "compound": "kara kutu",
+      "sentence": "Derin öğrenme neden kara kutu olarak görülüyor?",
+      "subset": "unknown",
+      "gold_type": null,
+      "gold_order": null,
+      "image_names": [
+        "14611993362.png",
+        "76095207275.png",
+        "55008421495.png",
+        "42749624665.png",
+        "77894435620.png"
+      ],
+      "engine_results": {
+        "Category": {
+          "sentence_type": "idiomatic",
+          "sentence_type_confidence": 0.8,
+          "ranking": [
+            3,
+            1,
+            2,
+            5,
+            4
+          ],
+          "ranking_confidence": 0.8,
+          "image_scores": null,
+          "processing_time": 6.468267917633057,
+          "reasoning": "Category-aware ranking for idiomatic usage"
+        }
+      },
+      "ensemble_result": {
+        "sentence_type": "idiomatic",
+        "sentence_type_confidence": 0.9999987500015625,
+        "ranking": [
+          3,
+          1,
+          2,
+          5,
+          4
+        ],
+        "ranking_confidence": 0.7,
+        "agreement_score": 1.0,
+        "predicted_order": [
+          "76095207275.png",
+          "55008421495.png",
+          "14611993362.png",
+          "77894435620.png",
+          "42749624665.png"
+        ]
+      }
+    },
+    {
+      "item_id": "Turkish_5",
+      "compound": "kara kutu",
+      "sentence": "Maalesef ki, yapay zekanın \"insanüstü\" zihinleri biz insanlarınkine yetişemiyor. Yapay zekalar korkunç birer öğretmenlerdir ve bilgisayar bilimi dünyasında onları \"kara kutular\" olarak adlandırırız.",
+      "subset": "unknown",
+      "gold_type": null,
+      "gold_order": null,
+      "image_names": [
+        "76095207275.png",
+        "14611993362.png",
+        "77894435620.png",
+        "42749624665.png",
+        "55008421495.png"
+      ],
+      "engine_results": {
+        "Category": {
+          "sentence_type": "idiomatic",
+          "sentence_type_confidence": 0.8,
+          "ranking": [
+            5,
+            1,
+            4,
+            3,
+            2
+          ],
+          "ranking_confidence": 0.8,
+          "image_scores": null,
+          "processing_time": 8.953529834747314,
+          "reasoning": "Category-aware ranking for idiomatic usage"
+        }
+      },
+      "ensemble_result": {
+        "sentence_type": "idiomatic",
+        "sentence_type_confidence": 0.9999987500015625,
+        "ranking": [
+          5,
+          1,
+          4,
+          3,
+          2
+        ],
+        "ranking_confidence": 0.7,
+        "agreement_score": 1.0,
+        "predicted_order": [
+          "14611993362.png",
+          "55008421495.png",
+          "42749624665.png",
+          "77894435620.png",
+          "76095207275.png"
+        ]
+      }
+    },
+    {
+      "item_id": "Turkish_6",
+      "compound": "kara kutu",
+      "sentence": "Gürcistan’da Düşen Uçağın Kara Kutusu Bulundu",
+      "subset": "unknown",
+      "gold_type": null,
+      "gold_order": null,
+      "image_names": [
+        "76095207275.png",
+        "14611993362.png",
+        "77894435620.png",
+        "42749624665.png",
+        "55008421495.png"
+      ],
+      "engine_results": {
+        "Category": {
+          "sentence_type": "literal",
+          "sentence_type_confidence": 0.8,
+          "ranking": [
+            2,
+            5,
+            3,
+            4,
+            1
+          ],
+          "ranking_confidence": 0.8,
+          "image_scores": null,
+          "processing_time": 3.7479493618011475,
+          "reasoning": "Category-aware ranking for literal usage"
+        }
+      },
+      "ensemble_result": {
+        "sentence_type": "literal",
+        "sentence_type_confidence": 0.9999987500015625,
+        "ranking": [
+          2,
+          5,
+          3,
+          4,
+          1
+        ],
+        "ranking_confidence": 0.7,
+        "agreement_score": 1.0,
+        "predicted_order": [
+          "55008421495.png",
+          "76095207275.png",
+          "77894435620.png",
+          "42749624665.png",
+          "14611993362.png"
+        ]
+      }
+    },
+    {
+      "item_id": "Turkish_7",
+      "compound": "kara kutu",
+      "sentence": "Azerbaycan-Gürcistan sınırında düşen C-130E Askeri Nakliye Uçağı’na ait kara kutu Ankara’ya getirildi. Karakutu (FDR ve CVDR) cihazlarının incelemeleri başladı.",
+      "subset": "unknown",
+      "gold_type": null,
+      "gold_order": null,
+      "image_names": [
+        "55008421495.png",
+        "14611993362.png",
+        "77894435620.png",
+        "76095207275.png",
+        "42749624665.png"
+      ],
+      "engine_results": {
+        "Category": {
+          "sentence_type": "literal",
+          "sentence_type_confidence": 0.8,
+          "ranking": [
+            2,
+            1,
+            3,
+            4,
+            5
+          ],
+          "ranking_confidence": 0.8,
+          "image_scores": null,
+          "processing_time": 5.810028553009033,
+          "reasoning": "Category-aware ranking for literal usage"
+        }
+      },
+      "ensemble_result": {
+        "sentence_type": "literal",
+        "sentence_type_confidence": 0.9999987500015625,
+        "ranking": [
+          2,
+          1,
+          3,
+          4,
+          5
+        ],
+        "ranking_confidence": 0.7,
+        "agreement_score": 1.0,
+        "predicted_order": [
+          "14611993362.png",
+          "55008421495.png",
+          "77894435620.png",
+          "76095207275.png",
+          "42749624665.png"
+        ]
+      }
+    },
+    {
+      "item_id": "Turkish_8",
+      "compound": "ekmek teknesi",
+      "sentence": "Bu kahve de bizim ekmek teknemiz.",
+      "subset": "unknown",
+      "gold_type": null,
+      "gold_order": null,
+      "image_names": [
+        "15845776539.png",
+        "88366896414.png",
+        "56471498291.png",
+        "10556771614.png",
+        "34196846786.png"
+      ],
+      "engine_results": {
+        "Category": {
+          "sentence_type": "idiomatic",
+          "sentence_type_confidence": 0.8,
+          "ranking": [
+            3,
+            4,
+            1,
+            5,
+            2
+          ],
+          "ranking_confidence": 0.8,
+          "image_scores": null,
+          "processing_time": 6.165283203125,
+          "reasoning": "Category-aware ranking for idiomatic usage"
+        }
+      },
+      "ensemble_result": {
+        "sentence_type": "idiomatic",
+        "sentence_type_confidence": 0.9999987500015625,
+        "ranking": [
+          3,
+          4,
+          1,
+          5,
+          2
+        ],
+        "ranking_confidence": 0.7,
+        "agreement_score": 1.0,
+        "predicted_order": [
+          "56471498291.png",
+          "34196846786.png",
+          "15845776539.png",
+          "88366896414.png",
+          "10556771614.png"
+        ]
+      }
+    },
+    {
+      "item_id": "Turkish_9",
+      "compound": "ekmek teknesi",
+      "sentence": "Açın gözü ekmek teknesinde olur.",
+      "subset": "unknown",
+      "gold_type": null,
+      "gold_order": null,
+      "image_names": [
+        "34196846786.png",
+        "56471498291.png",
+        "15845776539.png",
+        "10556771614.png",
+        "88366896414.png"
+      ],
+      "engine_results": {
+        "Category": {
+          "sentence_type": "idiomatic",
+          "sentence_type_confidence": 0.8,
+          "ranking": [
+            1,
+            2,
+            4,
+            5,
+            3
+          ],
+          "ranking_confidence": 0.8,
+          "image_scores": null,
+          "processing_time": 8.207738161087036,
+          "reasoning": "Category-aware ranking for idiomatic usage"
+        }
+      },
+      "ensemble_result": {
+        "sentence_type": "idiomatic",
+        "sentence_type_confidence": 0.9999987500015625,
+        "ranking": [
+          1,
+          2,
+          4,
+          5,
+          3
+        ],
+        "ranking_confidence": 0.7,
+        "agreement_score": 1.0,
+        "predicted_order": [
+          "34196846786.png",
+          "56471498291.png",
+          "88366896414.png",
+          "15845776539.png",
+          "10556771614.png"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,584 @@
+{
+  "metadata": {
+    "language": "EN",
+    "subset": null,
+    "max_samples": 5,
+    "timestamp": "20251210_171601",
+    "config": {
+      "vision_model": "gpt-5.1",
+      "text_model": "gpt-5.1",
+      "enabled_engines": [
+        "mira",
+        "daalft",
+        "ctyun_lite"
+      ],
+      "aggregation_method": "weighted_borda"
+    }
+  },
+  "metrics": {
+    "DCG": 1.70307173881387,
+    "NDCG": 0.886753286013579,
+    "Acc@1": 0.4,
+    "Acc@3": 0.6,
+    "MRR": 0.5900000000000001,
+    "SentenceTypeAcc": 0.8,
+    "N": 5
+  },
+  "results": [
+    {
+      "item_id": "EN_0",
+      "compound": "elbow grease",
+      "sentence": "After a long day supporting herself with her arms, she applied some elbow grease to soothe her dry, cracked skin.",
+      "subset": "Extended Evaluation",
+      "gold_type": "literal",
+      "gold_order": [
+        "83770618351.png",
+        "54318499613.png",
+        "53956536828.png",
+        "75007297939.png",
+        "89421546505.png"
+      ],
+      "image_names": [
+        "53956536828.png",
+        "54318499613.png",
+        "75007297939.png",
+        "83770618351.png",
+        "89421546505.png"
+      ],
+      "engine_results": {
+        "MIRA": {
+          "sentence_type": "literal",
+          "sentence_type_confidence": 0.8,
+          "ranking": [
+            4,
+            2,
+            3,
+            1,
+            5
+          ],
+          "ranking_confidence": 0.9874208829065749,
+          "image_scores": [
+            0.4666666666666666,
+            0.6666666666666666,
+            0.6666666666666666,
+            1.0,
+            0.20000000000000004
+          ],
+          "processing_time": 18.013373136520386,
+          "reasoning": "Aggregated from 3 samples"
+        },
+        "DAALFT": {
+          "sentence_type": "literal",
+          "sentence_type_confidence": 0.88,
+          "ranking": [
+            4,
+            3,
+            1,
+            2,
+            5
+          ],
+          "ranking_confidence": 0.8,
+          "image_scores": [
+            0.2,
+            0.2,
+            0.3,
+            0.9,
+            0.1
+          ],
+          "processing_time": 8.116899490356445,
+          "reasoning": "DETECT: The context is about physical strain on her arms and then physically applying something to her skin to soothe dryness and cracking. This supports a literal interpretation of ‘elbow grease’ as an actual substance (e.g., lotion or ointment) used on the skin, rather than the idiomatic sense of hard physical work.\n\nEXPLAIN: In this context, “elbow grease” refers literally to a substance like lotion, cream, or ointment being rubbed onto the skin around the elbow to moisturize and heal dryness"
+        },
+        "CTYUN-Lite": {
+          "sentence_type": "literal",
+          "sentence_type_confidence": 0.8,
+          "ranking": [
+            4,
+            3,
+            1,
+            2,
+            5
+          ],
+          "ranking_confidence": 0.7,
+          "image_scores": [
+            0.4,
+            0.6,
+            1.0,
+            0.8,
+            0.2
+          ],
+          "processing_time": 1.869152307510376,
+          "reasoning": "Direct caption-based ranking"
+        }
+      },
+      "ensemble_result": {
+        "sentence_type": "literal",
+        "sentence_type_confidence": 0.999999568965703,
+        "ranking": [
+          4,
+          3,
+          2,
+          1,
+          5
+        ],
+        "ranking_confidence": 0.6678571428571429,
+        "agreement_score": 0.6,
+        "predicted_order": [
+          "83770618351.png",
+          "75007297939.png",
+          "54318499613.png",
+          "53956536828.png",
+          "89421546505.png"
+        ]
+      },
+      "comparison": {
+        "exact_matches": 2,
+        "top1_correct": true
+      },
+      "type_correct": true
+    },
+    {
+      "item_id": "EN_1",
+      "compound": "night owl",
+      "sentence": "The photographer stayed up until midnight to capture a perfect shot of the elusive night owl.",
+      "subset": "Extended Evaluation",
+      "gold_type": "literal",
+      "gold_order": [
+        "27691426039.png",
+        "80731118574.png",
+        "16314377152.png",
+        "68674522585.png",
+        "55929836282.png"
+      ],
+      "image_names": [
+        "16314377152.png",
+        "27691426039.png",
+        "55929836282.png",
+        "68674522585.png",
+        "80731118574.png"
+      ],
+      "engine_results": {
+        "MIRA": {
+          "sentence_type": "literal",
+          "sentence_type_confidence": 0.8,
+          "ranking": [
+            4,
+            1,
+            5,
+            3,
+            2
+          ],
+          "ranking_confidence": 1.0,
+          "image_scores": [
+            0.4000000000000001,
+            1.0,
+            0.20000000000000004,
+            0.6,
+            0.8000000000000002
+          ],
+          "processing_time": 12.439647912979126,
+          "reasoning": "Aggregated from 3 samples"
+        },
+        "DAALFT": {
+          "sentence_type": "literal",
+          "sentence_type_confidence": 0.97,
+          "ranking": [
+            2,
+            5,
+            4,
+            1,
+            3
+          ],
+          "ranking_confidence": 0.8,
+          "image_scores": [
+            0.2,
+            0.9,
+            0.1,
+            0.3,
+            0.8
+          ],
+          "processing_time": 5.689334392547607,
+          "reasoning": "DETECT: The sentence describes a photographer taking a picture of an actual nocturnal bird, calling it 'elusive' and aiming for a 'perfect shot.' These are concrete, physical actions related to wildlife photography, not a metaphor for a person who stays up late.\n\nEXPLAIN: Here, \"night owl\" literally refers to an owl species that is active and hunts at night, emphasizing the bird’s nocturnal behavior and rarity. Visually, this would be best represented by a real owl perched in a dark, natural nig"
+        },
+        "CTYUN-Lite": {
+          "sentence_type": "literal",
+          "sentence_type_confidence": 0.8,
+          "ranking": [
+            2,
+            5,
+            4,
+            1,
+            3
+          ],
+          "ranking_confidence": 0.7,
+          "image_scores": [
+            0.8,
+            0.2,
+            0.4,
+            1.0,
+            0.6
+          ],
+          "processing_time": 3.252868413925171,
+          "reasoning": "Direct caption-based ranking"
+        }
+      },
+      "ensemble_result": {
+        "sentence_type": "literal",
+        "sentence_type_confidence": 0.9999995850624128,
+        "ranking": [
+          3,
+          4,
+          5,
+          1,
+          2
+        ],
+        "ranking_confidence": 0.6321428571428571,
+        "agreement_score": 0.3333333333333333,
+        "predicted_order": [
+          "68674522585.png",
+          "80731118574.png",
+          "16314377152.png",
+          "27691426039.png",
+          "55929836282.png"
+        ]
+      },
+      "comparison": {
+        "exact_matches": 3,
+        "top1_correct": false
+      },
+      "type_correct": true
+    },
+    {
+      "item_id": "EN_2",
+      "compound": "heart of gold",
+      "sentence": "Among the museum's rarest items they found a priceless heart of gold, gleaming under the soft lights.",
+      "subset": "Extended Evaluation",
+      "gold_type": "literal",
+      "gold_order": [
+        "55746234435.png",
+        "52842957936.png",
+        "60714765388.png",
+        "83895016827.png",
+        "78172995823.png"
+      ],
+      "image_names": [
+        "52842957936.png",
+        "55746234435.png",
+        "60714765388.png",
+        "78172995823.png",
+        "83895016827.png"
+      ],
+      "engine_results": {
+        "MIRA": {
+          "sentence_type": "literal",
+          "sentence_type_confidence": 0.8,
+          "ranking": [
+            2,
+            1,
+            3,
+            5,
+            4
+          ],
+          "ranking_confidence": 1.0,
+          "image_scores": [
+            0.8000000000000002,
+            1.0,
+            0.6,
+            0.26666666666666666,
+            0.3333333333333333
+          ],
+          "processing_time": 10.94143009185791,
+          "reasoning": "Aggregated from 3 samples"
+        },
+        "DAALFT": {
+          "sentence_type": "literal",
+          "sentence_type_confidence": 0.83,
+          "ranking": [
+            2,
+            1,
+            3,
+            4,
+            5
+          ],
+          "ranking_confidence": 0.8,
+          "image_scores": [
+            0.3,
+            0.7,
+            0.1,
+            0.1,
+            0.1
+          ],
+          "processing_time": 7.9492785930633545,
+          "reasoning": "DETECT: The phrase appears in a concrete, physical setting: inside a museum among rare items. The heart of gold is described as a priceless object that is gleaming under lights, which indicates an actual physical artifact made of gold being observed, not a description of someone's kind personality.\n\nEXPLAIN: In this context, “heart of gold” is literal: it refers to an actual heart-shaped object made of solid gold, valued as a rare, precious artifact rather than describing someone’s kindness. Vis"
+        },
+        "CTYUN-Lite": {
+          "sentence_type": "literal",
+          "sentence_type_confidence": 0.8,
+          "ranking": [
+            2,
+            1,
+            5,
+            3,
+            4
+          ],
+          "ranking_confidence": 0.7,
+          "image_scores": [
+            0.8,
+            1.0,
+            0.2,
+            0.6,
+            0.4
+          ],
+          "processing_time": 4.787703514099121,
+          "reasoning": "Direct caption-based ranking"
+        }
+      },
+      "ensemble_result": {
+        "sentence_type": "literal",
+        "sentence_type_confidence": 0.9999995594715596,
+        "ranking": [
+          2,
+          1,
+          3,
+          4,
+          5
+        ],
+        "ranking_confidence": 0.6678571428571429,
+        "agreement_score": 0.5333333333333333,
+        "predicted_order": [
+          "55746234435.png",
+          "52842957936.png",
+          "60714765388.png",
+          "78172995823.png",
+          "83895016827.png"
+        ]
+      },
+      "comparison": {
+        "exact_matches": 3,
+        "top1_correct": true
+      },
+      "type_correct": true
+    },
+    {
+      "item_id": "EN_3",
+      "compound": "agony aunt",
+      "sentence": "The agony aunt crawls the ruins of the city with her nieces, harvesting the pain and suffering of the souls trapped there.",
+      "subset": "Extended Evaluation",
+      "gold_type": "literal",
+      "gold_order": [
+        "01408794276.png",
+        "40775868986.png",
+        "21394025159.png",
+        "88126380876.png",
+        "50587395734.png"
+      ],
+      "image_names": [
+        "01408794276.png",
+        "21394025159.png",
+        "40775868986.png",
+        "50587395734.png",
+        "88126380876.png"
+      ],
+      "engine_results": {
+        "MIRA": {
+          "sentence_type": "idiomatic",
+          "sentence_type_confidence": 0.8,
+          "ranking": [
+            5,
+            2,
+            4,
+            3,
+            1
+          ],
+          "ranking_confidence": 1.0,
+          "image_scores": [
+            0.20000000000000004,
+            0.8000000000000002,
+            0.4000000000000001,
+            0.6,
+            1.0
+          ],
+          "processing_time": 18.67085313796997,
+          "reasoning": "Aggregated from 3 samples"
+        },
+        "DAALFT": {
+          "sentence_type": "idiomatic",
+          "sentence_type_confidence": 0.85,
+          "ranking": [
+            3,
+            5,
+            2,
+            4,
+            1
+          ],
+          "ranking_confidence": 0.8,
+          "image_scores": [
+            0.2,
+            0.4,
+            0.6,
+            0.3,
+            0.5
+          ],
+          "processing_time": 8.521073341369629,
+          "reasoning": "DETECT: In normal usage, \"agony aunt\" is an idiom meaning an advice columnist or a person who listens to others’ problems. Here the character is personified as moving through ruins and collecting emotional suffering, which extends that figurative role into a dark fantasy context rather than referring to a literal female relative in pain. The phrase describes a function/role connected to others’ emotional pain, not a physically agonized aunt, so the use is idiomatic.\n\nEXPLAIN: Here, “agony aunt” "
+        },
+        "CTYUN-Lite": {
+          "sentence_type": "literal",
+          "sentence_type_confidence": 0.8,
+          "ranking": [
+            3,
+            1,
+            4,
+            2,
+            5
+          ],
+          "ranking_confidence": 0.7,
+          "image_scores": [
+            0.6,
+            1.0,
+            0.4,
+            0.8,
+            0.2
+          ],
+          "processing_time": 3.033830404281616,
+          "reasoning": "Direct caption-based ranking"
+        }
+      },
+      "ensemble_result": {
+        "sentence_type": "idiomatic",
+        "sentence_type_confidence": 0.7205237028280773,
+        "ranking": [
+          5,
+          2,
+          4,
+          3,
+          1
+        ],
+        "ranking_confidence": 0.5785714285714285,
+        "agreement_score": 0.20000000000000004,
+        "predicted_order": [
+          "88126380876.png",
+          "21394025159.png",
+          "50587395734.png",
+          "40775868986.png",
+          "01408794276.png"
+        ]
+      },
+      "comparison": {
+        "exact_matches": 0,
+        "top1_correct": false
+      },
+      "type_correct": false
+    },
+    {
+      "item_id": "EN_4",
+      "compound": "shrinking violet",
+      "sentence": "In her garden, she noticed a shrinking violet that seemed to be suffering from the lack of sunlight.",
+      "subset": "Extended Evaluation",
+      "gold_type": "literal",
+      "gold_order": [
+        "55540866075.png",
+        "43951540029.png",
+        "25933704487.png",
+        "23979985966.png",
+        "25967767410.png"
+      ],
+      "image_names": [
+        "23979985966.png",
+        "25933704487.png",
+        "25967767410.png",
+        "43951540029.png",
+        "55540866075.png"
+      ],
+      "engine_results": {
+        "MIRA": {
+          "sentence_type": "literal",
+          "sentence_type_confidence": 0.8,
+          "ranking": [
+            4,
+            3,
+            5,
+            2,
+            1
+          ],
+          "ranking_confidence": 1.0,
+          "image_scores": [
+            0.4000000000000001,
+            0.6,
+            0.20000000000000004,
+            0.8000000000000002,
+            1.0
+          ],
+          "processing_time": 11.817708253860474,
+          "reasoning": "Aggregated from 3 samples"
+        },
+        "DAALFT": {
+          "sentence_type": "literal",
+          "sentence_type_confidence": 0.9,
+          "ranking": [
+            5,
+            3,
+            1,
+            2,
+            4
+          ],
+          "ranking_confidence": 0.8,
+          "image_scores": [
+            0.3,
+            0.2,
+            0.4,
+            0.1,
+            0.7
+          ],
+          "processing_time": 4.856778383255005,
+          "reasoning": "DETECT: The sentence explicitly refers to a garden context and describes the expression as a plant affected by lack of sunlight, indicating an actual violet flower that is physically shrinking, not a shy or timid person.\n\nEXPLAIN: Here, “shrinking violet” is used literally to describe a violet flower that is physically getting smaller or wilting because it is not receiving enough sunlight. Visually, this would be represented by a small violet plant whose petals and leaves are drooping or curling"
+        },
+        "CTYUN-Lite": {
+          "sentence_type": "literal",
+          "sentence_type_confidence": 0.8,
+          "ranking": [
+            5,
+            4,
+            2,
+            1,
+            3
+          ],
+          "ranking_confidence": 0.7,
+          "image_scores": [
+            0.2,
+            0.4,
+            0.8,
+            1.0,
+            0.6
+          ],
+          "processing_time": 1.8872780799865723,
+          "reasoning": "Direct caption-based ranking"
+        }
+      },
+      "ensemble_result": {
+        "sentence_type": "literal",
+        "sentence_type_confidence": 0.9999995726497553,
+        "ranking": [
+          5,
+          4,
+          3,
+          1,
+          2
+        ],
+        "ranking_confidence": 0.6464285714285714,
+        "agreement_score": 0.20000000000000004,
+        "predicted_order": [
+          "43951540029.png",
+          "55540866075.png",
+          "25967767410.png",
+          "25933704487.png",
+          "23979985966.png"
+        ]
+      },
+      "comparison": {
+        "exact_matches": 0,
+        "top1_correct": false
+      },
+      "type_correct": true
+    }
+  ]
+}
