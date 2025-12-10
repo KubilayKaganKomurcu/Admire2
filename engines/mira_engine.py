@@ -204,33 +204,27 @@ Where X are the image numbers 1-5 in order from best to worst match."""
         meaning_context = "idiomatic (figurative)" if sentence_type == "idiomatic" else "literal (word-for-word)"
         captions = item.get_captions()
         
-        prompt = f"""You are ranking image descriptions for how well they represent a potentially idiomatic expression.
+        prompt = f"""You are ranking image descriptions for how well they represent an expression.
 
 EXPRESSION: "{item.compound}"
 SENTENCE: "{item.sentence}"  
 MEANING TYPE: {meaning_context}
 
-The expression "{item.compound}" is used {meaning_context}ly in this sentence.
-
-Here are descriptions of 5 candidate images:
+IMAGE DESCRIPTIONS:
 {self._format_captions(captions)}
 
-Your task: Rank these images from BEST to WORST based on how well each image description matches the {meaning_context} meaning of "{item.compound}" as used in the sentence.
+Rank images from BEST (most relevant) to WORST (least relevant) for depicting the {meaning_context} meaning.
 
-RANKING GUIDELINES:
-- If IDIOMATIC: prefer descriptions showing figurative/metaphorical concepts
-- If LITERAL: prefer descriptions showing physical/literal interpretations
-- Consider what visual elements would best convey the intended meaning
+CRITICAL: You MUST end your response with exactly this format:
+Ranking: N, N, N, N, N
 
-Think step by step:
-1. What is the {meaning_context} meaning of "{item.compound}"?
-2. Which image description best captures this meaning?
-3. Rank all 5 from best to worst.
+Where N are the numbers 1-5 representing image numbers, from best to worst.
 
-OUTPUT FORMAT (required):
-Ranking: X, X, X, X, X
+Example valid outputs:
+- Ranking: 3, 1, 5, 2, 4
+- Ranking: 2, 4, 1, 3, 5
 
-Where X are image numbers 1-5 in order from best to worst."""
+Now analyze and provide your ranking:"""
 
         response = self._call_llm_with_retry(
             prompt,

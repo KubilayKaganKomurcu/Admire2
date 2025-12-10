@@ -38,20 +38,51 @@ def parse_ranking_from_response(response: str) -> List[int]:
     - "Ranking: 3, 1, 5, 2, 4"
     - "1. image3, 2. image1, ..."
     - "[3, 1, 5, 2, 4]"
+    - "3, 1, 5, 2, 4"
     """
+    # Debug: print response for analysis
+    print(f"  [DEBUG] Parsing response ({len(response)} chars): {response[:200]}...")
+    
+    # Try JSON object with "ranking" key first
+    ranking_json = re.search(r'"ranking"\s*:\s*\[([^\]]+)\]', response)
+    if ranking_json:
+        numbers = re.findall(r'\d+', ranking_json.group(1))
+        if len(numbers) >= 5:
+            result = [int(n) for n in numbers[:5]]
+            if set(result) == {1, 2, 3, 4, 5}:
+                print(f"  [DEBUG] Parsed from JSON ranking key: {result}")
+                return result
+    
     # Try JSON array format
     json_match = re.search(r'\[[\d,\s]+\]', response)
     if json_match:
         try:
-            return json.loads(json_match.group())
+            arr = json.loads(json_match.group())
+            if len(arr) >= 5 and all(isinstance(x, int) for x in arr[:5]):
+                result = arr[:5]
+                if set(result) == {1, 2, 3, 4, 5}:
+                    print(f"  [DEBUG] Parsed from JSON array: {result}")
+                    return result
         except json.JSONDecodeError:
             pass
     
-    # Try "Ranking: X, Y, Z" format
-    ranking_match = re.search(r'[Rr]anking[:\s]+([1-5][\s,]+[1-5][\s,]+[1-5][\s,]+[1-5][\s,]+[1-5])', response)
+    # Try "Ranking: X, Y, Z" format (more flexible)
+    ranking_match = re.search(r'[Rr]anking\s*[:\-]?\s*(\d[\s,.\-]+\d[\s,.\-]+\d[\s,.\-]+\d[\s,.\-]+\d)', response)
     if ranking_match:
-        numbers = re.findall(r'[1-5]', ranking_match.group(1))
-        return [int(n) for n in numbers]
+        numbers = re.findall(r'\d+', ranking_match.group(1))
+        if len(numbers) >= 5:
+            result = [int(n) for n in numbers[:5]]
+            if set(result) == {1, 2, 3, 4, 5}:
+                print(f"  [DEBUG] Parsed from 'Ranking:' format: {result}")
+                return result
+    
+    # Try finding 5 comma-separated numbers anywhere
+    comma_sep = re.search(r'(\d)\s*,\s*(\d)\s*,\s*(\d)\s*,\s*(\d)\s*,\s*(\d)', response)
+    if comma_sep:
+        result = [int(g) for g in comma_sep.groups()]
+        if set(result) == {1, 2, 3, 4, 5}:
+            print(f"  [DEBUG] Parsed from comma-separated: {result}")
+            return result
     
     # Try finding any sequence of 5 distinct numbers 1-5
     all_numbers = re.findall(r'[1-5]', response)
@@ -64,10 +95,12 @@ def parse_ranking_from_response(response: str) -> List[int]:
                 seen.add(n)
                 result.append(int(n))
             if len(result) == 5:
+                print(f"  [DEBUG] Parsed from scattered numbers: {result}")
                 return result
     
     # Default fallback (using reverse order to detect parsing failures)
     print(f"  ⚠️ PARSE FALLBACK: Could not parse ranking from response")
+    print(f"  [DEBUG] Full response: {response}")
     return [5, 4, 3, 2, 1]
 
 

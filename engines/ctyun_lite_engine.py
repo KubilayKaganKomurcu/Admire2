@@ -124,23 +124,21 @@ Answer with ONE word: LITERAL or IDIOMATIC"""
         # (CTYUN uses option shuffling to remove position bias)
         caption_block = self._format_shuffled_captions(captions)
         
-        prompt = f"""Task: Rank image descriptions by relevance to an expression's meaning.
+        prompt = f"""Expression: "{item.compound}"
+Sentence: "{item.sentence}"
+Meaning: {meaning_type}
 
-Expression: "{item.compound}"
-Context: "{item.sentence}"
-Meaning type: {meaning_type}
-
-The expression is used in its {meaning_type} sense. Rank these image descriptions from BEST match (1st) to WORST match (5th):
-
+IMAGE DESCRIPTIONS:
 {caption_block}
 
-Consider:
-- Which description best depicts the {meaning_type} meaning of "{item.compound}"?
-- Ignore position - evaluate each description on its own merit
-- Think about what visual representation would best convey the intended meaning
+Rank images 1-5 from BEST to WORST match for the {meaning_type} meaning.
 
-Output your ranking as 5 numbers separated by commas (image numbers from best to worst):
-Ranking:"""
+IMPORTANT: Output ONLY the ranking in this exact format:
+Ranking: N, N, N, N, N
+
+Example: Ranking: 3, 1, 5, 2, 4
+
+Your ranking:"""
 
         response = self._call_llm_with_retry(
             prompt,

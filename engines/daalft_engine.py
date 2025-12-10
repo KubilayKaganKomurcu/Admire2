@@ -276,30 +276,21 @@ Respond with JSON only:"""
         if explanation:
             explanation_block = f"\nMEANING EXPLANATION:\n{explanation}\n"
         
-        prompt = f"""TASK: Image Ranking for Idiom Understanding (Caption-Based)
-
-EXPRESSION: "{item.compound}"
+        prompt = f"""EXPRESSION: "{item.compound}"
 SENTENCE: "{item.sentence}"
 MEANING TYPE: {sentence_type.upper()} ({meaning_desc})
 {explanation_block}
 IMAGE DESCRIPTIONS:
 {self._format_captions(captions)}
 
-SCORING CRITERIA:
-- How well would each described image visually represent the {meaning_desc} meaning?
-- Does the description suggest content that captures "{item.compound}" as used here?
-- Consider what visual elements would best convey the intended meaning.
+Rank these 5 images from BEST to WORST for depicting the {meaning_desc} meaning.
 
-TASK: Assign a score from 1-10 to each image based on its description, then provide a ranking.
+CRITICAL: Respond with ONLY valid JSON in this exact format:
+{{"scores": [7, 5, 8, 3, 6], "ranking": [3, 1, 2, 5, 4]}}
 
-OUTPUT FORMAT (JSON):
-{{
-    "scores": [score1, score2, score3, score4, score5],
-    "ranking": [best_img_num, ..., worst_img_num],
-    "reasoning": "brief explanation"
-}}
+The "ranking" array must contain numbers 1-5 (image numbers) ordered from best to worst.
 
-Respond with JSON only:"""
+JSON response:"""
 
         response = self._call_llm_with_retry(
             prompt,
