@@ -144,7 +144,8 @@ def generate_submission(
     language: str = "Turkish",
     engine_name: str = "category",
     text_only: bool = False,
-    output_dir: str = "submissions"
+    output_dir: str = "submissions",
+    max_samples: Optional[int] = None
 ):
     """Generate submission TSV file."""
     
@@ -152,7 +153,8 @@ def generate_submission(
     
     # Get language code
     lang_code = LANGUAGE_CODES.get(language, language[:2].upper())
-    output_file = os.path.join(output_dir, f"submission_{lang_code}.tsv")
+    suffix = f"_test{max_samples}" if max_samples else ""
+    output_file = os.path.join(output_dir, f"submission_{lang_code}{suffix}.tsv")
     
     print(f"\n{'=' * 60}")
     print(f"Generating Submission for {language} ({lang_code})")
@@ -165,6 +167,11 @@ def generate_submission(
     if not items:
         print("No data loaded!")
         return
+    
+    # Limit samples if requested
+    if max_samples:
+        items = items[:max_samples]
+        print(f"Limited to first {max_samples} samples")
     
     # Initialize engine
     config = get_config()
@@ -247,6 +254,8 @@ def main():
                         help="Force text-only mode (captions only)")
     parser.add_argument("--output_dir", default="submissions",
                         help="Output directory for submission files")
+    parser.add_argument("--max_samples", type=int, default=None,
+                        help="Limit to first N samples (for testing)")
     
     args = parser.parse_args()
     
@@ -254,7 +263,8 @@ def main():
         language=args.language,
         engine_name=args.engine,
         text_only=args.text_only,
-        output_dir=args.output_dir
+        output_dir=args.output_dir,
+        max_samples=args.max_samples
     )
 
 
