@@ -161,13 +161,27 @@ class BaseEngine(ABC):
             messages.append({"role": "user", "content": prompt})
         
         # GPT-5 models only support temperature=1, so we don't pass it
-        response = self.client.chat.completions.create(
-            model=model,
-            messages=messages,
-            max_completion_tokens=max_tokens
-        )
-        
-        return response.choices[0].message.content
+        try:
+            response = self.client.chat.completions.create(
+                model=model,
+                messages=messages,
+                max_completion_tokens=max_tokens
+            )
+            
+            # Debug: check response structure
+            if not response.choices:
+                print(f"  [API DEBUG] No choices in response!")
+                return ""
+            
+            content = response.choices[0].message.content
+            if content is None:
+                print(f"  [API DEBUG] Response content is None! Finish reason: {response.choices[0].finish_reason}")
+                return ""
+            
+            return content
+        except Exception as e:
+            print(f"  [API DEBUG] API call failed: {type(e).__name__}: {e}")
+            raise
     
     def _call_llm_with_retry(
         self,

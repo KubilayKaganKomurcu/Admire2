@@ -18,16 +18,15 @@ class APIConfig:
     openai_api_key: str = os.environ.get("OPENAI_API_KEY", "")
     openai_base_url: str = "https://api.openai.com/v1"
     
-    # Model choices (GPT-5 series - better AND cheaper than GPT-4!)
+    # Model choices (GPT-5 series)
     # Options: gpt-5, gpt-5-mini, gpt-5-nano
-    # Pricing: gpt-5 ($1.25/$10), gpt-5-mini ($0.25/$2), gpt-5-nano ($0.05/$0.40) per 1M tokens
     vision_model: str = "gpt-5"  # For image + text (best quality)
-    text_model: str = "gpt-5-mini"  # For text-only (5x cheaper, still excellent)
+    text_model: str = "gpt-5-mini"  # For text-only (cheaper, still excellent)
     reasoning_model: str = "gpt-5"  # For complex reasoning
     
-    # Alternative: Use nano for maximum cost savings (lower quality)
+    # Alternative: Use gpt-5-mini for everything to save costs
     # vision_model: str = "gpt-5-mini"
-    # text_model: str = "gpt-5-nano"
+    # text_model: str = "gpt-5-mini"
     
     # Rate limiting
     max_retries: int = 3
