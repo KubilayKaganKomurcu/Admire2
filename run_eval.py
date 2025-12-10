@@ -169,6 +169,28 @@ def run_evaluation(
             print(f"   Gold type: {item.sentence_type}")
         print("-" * 70)
         
+        # Check if images exist
+        if verbose:
+            print(f"\n   📁 Checking image paths:")
+            images_found = 0
+            for j, img_path in enumerate(item.image_paths[:2], 1):  # Check first 2
+                exists = os.path.exists(img_path)
+                status = "✓" if exists else "✗"
+                print(f"      {status} Image {j}: {img_path}")
+                if exists:
+                    images_found += 1
+            if images_found == 0:
+                print(f"      → Running in CAPTION-ONLY mode (no images found)")
+            print()
+        
+        # Show captions being used
+        if verbose:
+            print(f"   📝 Captions:")
+            for j, cap in enumerate(item.image_captions, 1):
+                cap_preview = cap[:60] + "..." if len(cap) > 60 else cap
+                print(f"      [{j}] {cap_preview}")
+            print()
+        
         # Run each engine
         engine_results = {}
         for name, engine in engines.items():
@@ -179,6 +201,10 @@ def run_evaluation(
                 engine_results[name] = result
                 if verbose:
                     print(f"     → Type: {result.sentence_type}, Ranking: {result.ranking}")
+                    # Show raw response snippet for debugging
+                    if result.raw_response:
+                        response_preview = result.raw_response[:150].replace('\n', ' ')
+                        print(f"     → Raw response: {response_preview}...")
             except Exception as e:
                 print(f"     ⚠ Error in {name}: {e}")
         

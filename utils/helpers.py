@@ -66,8 +66,9 @@ def parse_ranking_from_response(response: str) -> List[int]:
             if len(result) == 5:
                 return result
     
-    # Default fallback
-    return [1, 2, 3, 4, 5]
+    # Default fallback (using reverse order to detect parsing failures)
+    print(f"  ⚠️ PARSE FALLBACK: Could not parse ranking from response")
+    return [5, 4, 3, 2, 1]
 
 
 def parse_sentence_type_from_response(response: str) -> Tuple[str, float]:
@@ -115,14 +116,16 @@ def normalize_ranking(ranking: List[int]) -> List[int]:
     Normalize ranking to ensure it contains exactly [1,2,3,4,5] as a permutation.
     """
     if len(ranking) != 5:
-        return [1, 2, 3, 4, 5]
+        print(f"  ⚠️ NORMALIZE FALLBACK: Ranking length is {len(ranking)}, not 5. Ranking: {ranking}")
+        return [5, 4, 3, 2, 1]
     
     # Check if valid permutation
     if set(ranking) == {1, 2, 3, 4, 5}:
         return ranking
     
     # If not valid, return default
-    return [1, 2, 3, 4, 5]
+    print(f"  ⚠️ NORMALIZE FALLBACK: Invalid permutation {ranking}")
+    return [5, 4, 3, 2, 1]
 
 
 def ranking_to_image_order(ranking: List[int], image_names: List[str]) -> List[str]:
