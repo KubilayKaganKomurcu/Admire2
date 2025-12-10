@@ -65,14 +65,22 @@ def evaluate_results(json_file: str):
         # Convert ranking to order (which image is 1st, 2nd, etc.)
         pred_order = ranking_to_order(pred_ranking)
         
-        # Check first 2 positions
+        # Gold labels are in ORDER format (which images should be 1st, 2nd)
+        gold_pos1_img = gold[0]  # Image number that should be 1st
+        gold_pos2_img = gold[1]  # Image number that should be 2nd
+        
+        # Check ranking directly: gold images should have ranks 1 and 2
+        # ranking[i-1] = rank of image i
+        pred_rank_img1 = pred_ranking[gold_pos1_img - 1] if gold_pos1_img <= len(pred_ranking) else None
+        pred_rank_img2 = pred_ranking[gold_pos2_img - 1] if gold_pos2_img <= len(pred_ranking) else None
+        
+        # Gold images should have ranks 1 and 2
+        pos1_match = pred_rank_img1 == 1  # Gold image 1 should have rank 1
+        pos2_match = pred_rank_img2 == 2  # Gold image 2 should have rank 2
+        
+        # Also show order format for comparison
         pred_pos1 = pred_order[0] if len(pred_order) > 0 else None
         pred_pos2 = pred_order[1] if len(pred_order) > 1 else None
-        gold_pos1 = gold[0]
-        gold_pos2 = gold[1]
-        
-        pos1_match = pred_pos1 == gold_pos1
-        pos2_match = pred_pos2 == gold_pos2
         
         if pos1_match:
             pos1_correct += 1
@@ -86,9 +94,13 @@ def evaluate_results(json_file: str):
         print(f"Item {i+1}: '{compound}'")
         print(f"  Predicted ranking: {pred_ranking}")
         print(f"  Predicted order:   {pred_order}")
-        print(f"  Gold (first 2):    {gold}")
-        print(f"  Position 1: Pred={pred_pos1}, Gold={gold_pos1} → {'✓' if pos1_match else '✗'}")
-        print(f"  Position 2: Pred={pred_pos2}, Gold={gold_pos2} → {'✓' if pos2_match else '✗'}")
+        print(f"  Gold (first 2 images): {gold} (Image {gold_pos1_img} should be 1st, Image {gold_pos2_img} should be 2nd)")
+        print(f"  Ranking check:")
+        print(f"    Image {gold_pos1_img} rank: Pred={pred_rank_img1}, Gold=1 → {'✓' if pos1_match else '✗'}")
+        print(f"    Image {gold_pos2_img} rank: Pred={pred_rank_img2}, Gold=2 → {'✓' if pos2_match else '✗'}")
+        print(f"  Order check (for reference):")
+        print(f"    Position 1: Pred={pred_pos1}, Gold={gold_pos1_img} → {'✓' if pred_pos1 == gold_pos1_img else '✗'}")
+        print(f"    Position 2: Pred={pred_pos2}, Gold={gold_pos2_img} → {'✓' if pred_pos2 == gold_pos2_img else '✗'}")
         
         # Show per-engine predictions
         engine_results = result.get('engine_results', {})
@@ -97,9 +109,12 @@ def evaluate_results(json_file: str):
             if 'ranking' in eng_result:
                 eng_ranking = eng_result['ranking']
                 eng_order = ranking_to_order(eng_ranking)
-                eng_pos1_match = eng_order[0] == gold_pos1
-                eng_pos2_match = eng_order[1] == gold_pos2
-                print(f"    {engine_name}: order={eng_order[:2]} → Pos1:{'✓' if eng_pos1_match else '✗'} Pos2:{'✓' if eng_pos2_match else '✗'}")
+                eng_rank_img1 = eng_ranking[gold_pos1_img - 1] if gold_pos1_img <= len(eng_ranking) else None
+                eng_rank_img2 = eng_ranking[gold_pos2_img - 1] if gold_pos2_img <= len(eng_ranking) else None
+                eng_pos1_match = eng_rank_img1 == 1
+                eng_pos2_match = eng_rank_img2 == 2
+                print(f"    {engine_name}: ranking={eng_ranking}, order={eng_order[:2]}")
+                print(f"      Image {gold_pos1_img} rank={eng_rank_img1}, Image {gold_pos2_img} rank={eng_rank_img2} → Pos1:{'✓' if eng_pos1_match else '✗'} Pos2:{'✓' if eng_pos2_match else '✗'}")
     
     # Summary
     print(f"\n{'=' * 70}")
