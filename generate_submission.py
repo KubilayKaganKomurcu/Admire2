@@ -221,6 +221,7 @@ def generate_submission(
             
             results.append({
                 "compound": item.compound,
+                "sentence": item.sentence,
                 "expected_order": expected_order_str
             })
             
@@ -229,6 +230,7 @@ def generate_submission(
             # Use default order on error
             results.append({
                 "compound": item.compound,
+                "sentence": item.sentence,
                 "expected_order": str(item.image_names)
             })
     
