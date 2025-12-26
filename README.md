@@ -1,6 +1,6 @@
 # AdMIRe 2.0 - Category-Aware Image Ranking
 
-A training-free framework for **Multimodal Idiomaticity Representation** using GPT-4o's vision capabilities.
+A training-free framework for **Multimodal Idiomaticity Representation** using GPT-5.1's vision capabilities.
 
 ## 🎯 Category Engine Approach
 
@@ -136,7 +136,7 @@ The ranking `[3, 1, 2, 5, 4]` means:
 
 The system supports zero-shot cross-lingual transfer:
 - All prompts work with any language
-- GPT-4o handles multilingual text naturally
+- GPT-5.1 handles multilingual text naturally
 - Works with both images and text captions
 
 ## 📝 Example Usage
@@ -170,7 +170,7 @@ print(f"Sentence Type: {result.sentence_type}")
 
 ### API Errors
 - Check your API key is set correctly
-- Ensure you have GPT-4o API access
+- Ensure you have GPT-5.1 API access
 - For rate limits, the engine includes automatic retry logic
 
 ### Missing Images
