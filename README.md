@@ -179,4 +179,4 @@ print(f"Sentence Type: {result.sentence_type}")
 
 ---
 
-*AdMIRe 2.0 Category Engine - Built for SemEval-2025 Task 1*
+*AdMIRe 2.0 Category Engine*
