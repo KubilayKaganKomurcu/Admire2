@@ -35,14 +35,14 @@ IDIOMATIC = A figurative/metaphorical meaning, not the actual objects
 Based on the classification, the ranking strategy changes:
 
 **For LITERAL usage:**
-- ✓ BEST (Rank 1-2): Images containing the actual words/objects → LITERAL
-- ✓ GOOD (Rank 3): Images with only one word visible → LITERAL-RELATED
-- ✗ AVOID (Rank 4-5): Images without the words → IDIOMATIC/DISTRACTOR
+- ✓ BEST (Rank 1): Images containing the actual words/objects → LITERAL
+- ✓ GOOD (Rank 2): Images with only one word visible → LITERAL-RELATED
+- ✗ AVOID (Rank 3+): Images without the words → IDIOMATIC/DISTRACTOR
 
 **For IDIOMATIC usage:**
-- ✓ BEST (Rank 1-2): Images showing the figurative meaning (NO literal objects) → IDIOMATIC
-- ✓ GOOD (Rank 3): Images close to idiomatic meaning → IDIOMATIC-RELATED
-- ✗ AVOID (Rank 4-5): Images with literal objects → These are WRONG for idiomatic usage!
+- ✓ BEST (Rank 1): Images showing the figurative meaning (NO literal objects) → IDIOMATIC
+- ✓ GOOD (Rank 2): Images close to idiomatic meaning → IDIOMATIC-RELATED
+- ✗ AVOID (Rank 3+): Images with literal objects → These are WRONG for idiomatic usage!
 
 ### Key Insight
 
