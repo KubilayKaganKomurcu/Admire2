@@ -2,6 +2,43 @@
 
 A framework for **Multimodal Idiomaticity Representation** using GPT-5.1's vision capabilities.
 
+## 🧠 Methodology
+
+Our approach is an **inference-time reasoning** system that requires **no training or fine-tuning**. It is structured as an **expert system** that encodes domain knowledge about idiom image categories directly into the prompting strategy.
+
+| Aspect | Description |
+|--------|-------------|
+| **Inference-Time Reasoning** | All reasoning happens at prediction time via structured prompts—no model weights are updated |
+| **Expert System** | Domain knowledge (5 image categories, literal vs idiomatic rules) is encoded as explicit decision rules |
+| **Ensembling** | Multi-step pipeline combines classification and ranking signals for robust predictions |
+
+### Architecture
+
+```
+Input: (compound, sentence, images/captions)
+                    │
+                    ▼
+         ┌─────────────────────┐
+         │  Step 1: Classify   │
+         │  (Literal/Idiomatic)│
+         └──────────┬──────────┘
+                    │
+         ┌──────────▼──────────┐
+         │  Step 2: Category-  │
+         │  Aware Ranking      │
+         │  (Expert Rules)     │
+         └──────────┬──────────┘
+                    │
+                    ▼
+         Final: (ranking, sentence_type)
+```
+
+The system **ensembles** two reasoning steps:
+1. **Classification**: Determines context (literal vs idiomatic)
+2. **Ranking**: Applies category-specific expert rules based on classification
+
+This structured approach outperforms single-step ranking by explicitly modeling the relationship between sentence context and image relevance.
+
 ## 🎯 Category Engine Approach
 
 The Category Engine is built on a key insight: each compound expression in the dataset has **5 types of images**:
