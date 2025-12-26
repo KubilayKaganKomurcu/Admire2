@@ -1,6 +1,6 @@
 # AdMIRe 2.0 - Category-Aware Image Ranking
 
-A training-free framework for **Multimodal Idiomaticity Representation** using GPT-5.1's vision capabilities.
+A framework for **Multimodal Idiomaticity Representation** using GPT-5.1's vision capabilities.
 
 ## 🎯 Category Engine Approach
 
