@@ -40,12 +40,6 @@ env/
 data/
 !data/README_reorganization.md
 
-# Outputs
-outputs/
-*.csv
-submission.tsv
-results/
-
 # Logs
 *.log
 logs/
